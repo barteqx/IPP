@@ -12,12 +12,13 @@ class IPP(object):
     def __init__(self):
         self.__window = Window()
         self.__state_machine = StateMachine()
-        self.__state_machine.register(States.Menu, MenuState(self.__state_machine))
-        self.__state_machine.register(States.Quit, QuitState(self.__state_machine))
+        self.__state_machine.register(States.Menu, MenuState())
+        self.__state_machine.register(States.Quit, QuitState())
 
     def run(self):
         self.__window.display()
-        self.__state_machine.start(States.Menu)
+        self.__state_machine.switch(States.Menu)
+        self.__state_machine.start()
 
 
 class Context(object):
