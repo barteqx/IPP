@@ -117,6 +117,6 @@ for x in range(1,4):
     listOfObjects.append(BodyModel(Acceleration(x, x), Velocity(x, x), Position(x, x), x))
 
 for x in range(10):
-    listOfObjects = Physics.computeGravityInfluence(listOfObjects, deltaTime)
+    listOfObjects = Physics.compute_gravity_influence(listOfObjects, deltaTime)
     printList(listOfObjects)
 
