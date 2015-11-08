@@ -11,5 +11,10 @@ class BodyModel:
         self.acceleration = acceleration
         self.velocity = velocity
         self.position = position
+        self.last_position = None
         self.mass = mass
-        self.radius
+        self.radius = radius
+
+    def update_position(self, position):
+        self.last_position = self.position
+        self.position = position

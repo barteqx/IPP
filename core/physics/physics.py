@@ -17,10 +17,10 @@ class Physics:
         resultListOfObjects = []
 
         for obj in listOfObjects:
-            force = Physics.computeForce(listOfObjects, obj)
-            acceleration = Physics.computeAcceleration(force, obj.mass)
-            velocity = Physics.computeVelocity(obj.velocity, acceleration, deltaTime)
-            position = Physics.computePosition(obj.position, velocity, deltaTime)
+            force = Physics.__compute_force(listOfObjects, obj)
+            acceleration = Physics.__compute_acceleration(force, obj.mass)
+            velocity = Physics.__compute_velocity(obj.velocity, acceleration, deltaTime)
+            position = Physics.__compute_position(obj.position, velocity, deltaTime)
 
             resultListOfObjects.append(BodyModel(acceleration, velocity, position, obj.mass))
 
@@ -45,6 +45,7 @@ class Physics:
 
     @staticmethod
     def __compute_position(oldPosition, velocity, deltaTime):
+
         position = Position(oldPosition.x, oldPosition.y)
         position.x += velocity.x * deltaTime
         position.y += velocity.y * deltaTime
@@ -70,7 +71,10 @@ class Physics:
         v_normal = np.array([v_obj1[0] - v_obj2[0], v_obj1[1] - v_obj2[1]])
 
         if np.absolute(v_normal) <= (obj1.radius + obj2.radius):
+            if np.absolute(v_normal) < (obj1.radius + obj2.radius):
+                obj1.position, obj2.position = obj1.last_position, obj2.last_position
             return True
+
         else: return False
 
     @staticmethod
