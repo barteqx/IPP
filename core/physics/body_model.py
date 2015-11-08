@@ -1,4 +1,4 @@
-from PhysicsVariables import *
+from physics_variables import *
 __author__ = 'Pawel'
 
 
