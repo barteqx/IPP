@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import abc
+import core.events.event_aggregator as ea
 
 
 class StateMachine(object):
 
-    def __init__(self):
+    def __init__(self, event_aggregator):
         self.__state_collection = {}
         self.__current_state_key = None
         self.__current_state = None
+        self.__event_aggregator = event_aggregator
 
     @property
     def current(self):
@@ -39,6 +41,7 @@ class StateMachine(object):
             key = self.__current_state.next()
             if key is not None and key != self.__current_state_key:
                 self.switch(key)
+            self.__event_aggregator.publish(ea.TickEvent())
             self.__current_state.draw()
 
 

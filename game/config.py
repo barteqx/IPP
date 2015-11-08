@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
-from collections import namedtuple
+import collections
 
 
 class Config(object):
@@ -19,4 +19,5 @@ class Config(object):
         stream = open(path_to_file)
         obj = json.load(stream)
         json_str = json.dumps(obj)
-        return json.loads(json_str, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        return json.loads(json_str,
+                          object_hook=lambda d: collections.namedtuple('X', d.keys())(*d.values()))

@@ -1,33 +1,49 @@
 # -*- coding: utf-8 -*-
 
+import abc
 import sys
+import uuid
 import pygame
 import pygame.locals
 import pygame.time
-from core.state import State
+import core.events.event_aggregator as ea
+import core.state as state
 
 
 class States(object):
+
     Menu = 0x0001
-    Quit = 0x0002
+    Battle = 0x0002
+    Quit = 0x0004
 
 
-class MenuState(State):
+class SubscribableState(state.State, ea.Subscriber):
 
-    def __init__(self):
-        State.__init__(self)
+    __metaclass__ = abc.ABCMeta
+
+    def __init__(self, event_aggregator):
+        state.State.__init__(self)
+        ea.Subscriber.__init__(self, event_aggregator)
+        self._uuid = uuid.uuid4()
+
+    def uuid(self):
+        return self._uuid
+
+
+class MenuState(SubscribableState):
+
+    def __init__(self, event_aggregator):
+        SubscribableState.__init__(self, event_aggregator)
+        self._event_aggregator.subscribe(self, ea.EventTypes.KEYDOWN)
+        self._event_aggregator.subscribe(self, ea.EventTypes.QUIT)
+        self.__next_state = None
 
     def on_enter(self):
         pass
 
     def next(self):
-        for event in pygame.event.get():
-            if event.type == pygame.locals.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.locals.KEYDOWN:
-                if event.key == pygame.locals.K_q:
-                    return States.Quit
+        if self.__next_state is not None:
+            return self.__next_state
         return None
 
     def draw(self):
@@ -35,8 +51,30 @@ class MenuState(State):
         print 'menu state [draw]'
         time.sleep(0.25)
 
+    def notify(self, event):
+        if isinstance(event, ea.QuitEvent):
+            self.__next_state = States.Quit
+        elif isinstance(event, ea.KeydownEvent):
+            if event.args.key == pygame.locals.K_q:
+                self.__next_state = States.Quit
 
-class QuitState(State):
+
+class BattleState(state.State):
+
+    def __init__(self):
+        state.State.__init__(self)
+
+    def on_enter(self):
+        pass
+
+    def next(self):
+        return None
+
+    def draw(self):
+        pass
+
+
+class QuitState(state.State):
 
     def on_enter(self):
         print 'quit state [on_enter]'
