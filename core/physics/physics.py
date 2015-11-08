@@ -88,8 +88,8 @@ class Physics:
         v_obj2_normal  = np.vdot(v_unit_normal, v_obj2)
         v_obj2_tangent = np.vdot(v_unit_tangent, v_obj2)
 
-        v_obj1_new_normal = (v_obj1_normal(obj1.mass - obj2.mass) + 2*obj2.mass*v_obj2_normal)/(obj1.mass + obj2.mass)
-        v_obj2_new_normal = (v_obj2_normal(obj2.mass - obj1.mass) + 2*obj1.mass*v_obj1_normal)/(obj1.mass + obj2.mass)
+        v_obj1_new_normal = (v_obj1_normal*(obj1.mass - obj2.mass) + 2*obj2.mass*v_obj2_normal)/(obj1.mass + obj2.mass)
+        v_obj2_new_normal = (v_obj2_normal*(obj2.mass - obj1.mass) + 2*obj1.mass*v_obj1_normal)/(obj1.mass + obj2.mass)
 
         vec_obj1_normal  = np.dot(v_obj1_new_normal, v_unit_normal)
         vec_obj1_tangent = np.dot(v_obj1_tangent, v_unit_tangent)
