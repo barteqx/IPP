@@ -12,10 +12,12 @@ class EventAggregator(object):
     def subscribe(self, subscriber, event_type):
         if event_type not in self.__event_subscribers:
             self.__event_subscribers[event_type] = weakref.WeakValueDictionary()
-        self.__event_subscribers[event_type][subscriber.uuid] = subscriber
+        subscriber_id = id(subscriber)
+        self.__event_subscribers[event_type][subscriber_id] = subscriber
 
     def unsubscribe(self, subscriber, event_type):
-        del self.__event_subscribers[event_type][subscriber.uuid]
+        subscriber_id = id(subscriber)
+        del self.__event_subscribers[event_type][subscriber_id]
 
     def publish(self, event):
         subscribers = self.__event_subscribers[event.type]
@@ -26,13 +28,6 @@ class EventAggregator(object):
 class Subscriber(object):
 
     __metaclass__ = abc.ABCMeta
-
-    def __init__(self, event_aggregator):
-        self._event_aggregator = event_aggregator
-
-    @abc.abstractproperty
-    def uuid(self):
-        pass
 
     @abc.abstractmethod
     def notify(self, event):
@@ -64,16 +59,16 @@ class EventTypes(object):
 class TickEvent(Event):
 
     def __init__(self):
-        super(TickEvent, self).__init__(EventTypes.TICK)
+        Event.__init__(self, EventTypes.TICK)
 
 
 class QuitEvent(Event):
 
     def __init__(self):
-        super(QuitEvent, self).__init__(EventTypes.QUIT)
+        Event.__init__(self, EventTypes.QUIT)
 
 
 class KeydownEvent(Event):
 
     def __init__(self, args):
-        super(KeydownEvent, self).__init__(EventTypes.KEYDOWN, args)
+        Event.__init__(self, EventTypes.KEYDOWN, args)

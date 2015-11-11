@@ -1,11 +1,12 @@
 {
     "window": {
         "size": {
-            "width": 500,
-            "height": 500
+            "width": 640,
+            "height": 480
         }
     },
     "game": {
-        "name": "IPP"
+        "name": "IPP",
+        "fps": 60
     }
 }

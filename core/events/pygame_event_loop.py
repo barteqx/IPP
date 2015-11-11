@@ -2,28 +2,23 @@
 
 import pygame
 import pygame.locals
-import uuid
 import core.events.event_aggregator as ea
 
 
 class PygameEventLoop(ea.Subscriber):
 
     def __init__(self, event_aggregator):
-        super(PygameEventLoop, self).__init__(event_aggregator)
-        self.__uuid = uuid.uuid4()
+        self.__event_aggregator = event_aggregator
 
     def set_allowed_events(self, events):
         pygame.event.set_allowed(None)
         pygame.event.set_allowed(events)
 
     def on(self):
-        self._event_aggregator.subscribe(self, ea.EventTypes.TICK)
+        self.__event_aggregator.subscribe(self, ea.EventTypes.TICK)
 
     def off(self):
-        self._event_aggregator.unsubscribe(self, ea.EventTypes.TICK)
-
-    def uuid(self):
-        return self.__uuid
+        self.__event_aggregator.unsubscribe(self, ea.EventTypes.TICK)
 
     def notify(self, event):
         if isinstance(event, ea.TickEvent):
@@ -33,6 +28,6 @@ class PygameEventLoop(ea.Subscriber):
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.locals.QUIT:
-                self._event_aggregator.publish(ea.QuitEvent())
+                self.__event_aggregator.publish(ea.QuitEvent())
             elif event.type == pygame.locals.KEYDOWN:
-                self._event_aggregator.publish(ea.KeydownEvent(event))
+                self.__event_aggregator.publish(ea.KeydownEvent(event))
