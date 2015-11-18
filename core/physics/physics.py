@@ -87,17 +87,17 @@ class Physics:
         v_unit_normal = np.divide(v_normal, np.absolute(v_normal))
         v_unit_tangent = np.array([-1*v_unit_normal[1], v_unit_normal[0]])
 
-        v_obj1_normal  = np.vdot(v_unit_normal, v_obj1)
+        v_obj1_normal = np.vdot(v_unit_normal, v_obj1)
         v_obj1_tangent = np.vdot(v_unit_tangent, v_obj1)
-        v_obj2_normal  = np.vdot(v_unit_normal, v_obj2)
+        v_obj2_normal = np.vdot(v_unit_normal, v_obj2)
         v_obj2_tangent = np.vdot(v_unit_tangent, v_obj2)
 
         v_obj1_new_normal = (v_obj1_normal*(obj1.mass - obj2.mass) + 2*obj2.mass*v_obj2_normal)/(obj1.mass + obj2.mass)
         v_obj2_new_normal = (v_obj2_normal*(obj2.mass - obj1.mass) + 2*obj1.mass*v_obj1_normal)/(obj1.mass + obj2.mass)
 
-        vec_obj1_normal  = np.dot(v_obj1_new_normal, v_unit_normal)
+        vec_obj1_normal = np.dot(v_obj1_new_normal, v_unit_normal)
         vec_obj1_tangent = np.dot(v_obj1_tangent, v_unit_tangent)
-        vec_obj2_normal  = np.dot(v_obj2_new_normal, v_unit_normal)
+        vec_obj2_normal = np.dot(v_obj2_new_normal, v_unit_normal)
         vec_obj2_tangent = np.dot(v_obj2_tangent, v_unit_tangent)
 
         v_obj1_final = np.add(vec_obj1_normal, vec_obj1_tangent)
@@ -119,4 +119,3 @@ for x in range(1,4):
 for x in range(10):
     listOfObjects = Physics.compute_gravity_influence(listOfObjects, deltaTime)
     printList(listOfObjects)
-
