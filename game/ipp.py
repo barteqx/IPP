@@ -23,7 +23,7 @@ class IPP(object):
         self.__set_context()
         self.__enable_pygame_events_processing()
         self.__register_states()
-        self.__state_machine.switch(states.States.Menu)
+        self.__state_machine.switch(states.States.Battle)
         self.__state_machine.start()
 
     def __set_context(self):

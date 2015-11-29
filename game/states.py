@@ -8,7 +8,7 @@ import pygame.time
 import core.events.event_aggregator as ea
 import core.state as state
 import game.ipp
-
+from view import *
 
 class States(object):
 
@@ -23,12 +23,13 @@ class State(state.State, ea.Subscriber):
 
     def __init__(self, event_aggregator):
         state.State.__init__(self)
-        self.__show_fps = False
+        self.__show_fps = True
         self._event_aggregator = event_aggregator
         self._context = game.ipp.Context
         self._screen = game.ipp.Context.screen
         self._display = pygame.display
         self._clock = pygame.time.Clock()
+
 
     def on_enter(self):
         self._event_aggregator.subscribe(self, ea.EventTypes.KEYDOWN)
@@ -92,18 +93,33 @@ class BattleState(State):
 
     def __init__(self, event_aggregator):
         State.__init__(self, event_aggregator)
+        self.__next_state = None
+        self.view = View()
 
     def on_enter(self):
-        pass
+        State.on_enter(self)
+        self._event_aggregator.subscribe(self, ea.EventTypes.QUIT)
+
+    def on_exit(self):
+        State.on_exit(self)
+        self._event_aggregator.unsubscribe(self, ea.EventTypes.QUIT)
 
     def next(self):
+        if self.__next_state is not None:
+            return self.__next_state
         return None
 
     def draw(self):
-        pass
+        State.draw(self)
+        self.view.render_battle_state(float(self._clock.get_time())/1000, self._screen)
 
     def notify(self, event):
-        pass
+        State.notify(self, event)
+        if isinstance(event, ea.QuitEvent):
+            self.__next_state = States.Quit
+        elif isinstance(event, ea.KeydownEvent):
+            if event.args.key == pygame.locals.K_q:
+                self.__next_state = States.Quit
 
 
 class QuitState(state.State):
