@@ -1,5 +1,5 @@
 from core.physics.body_model import *
-from core.physics.Physics import Physics
+from core.physics.physics import Physics
 __author__ = 'Pawel'
 
 

@@ -31,8 +31,8 @@ class Physics:
         #lista, w kotrej znajda sie zaktualizowane dane obiektow
         result_list_of_lists = []
         list_of_all_objects = list(itertools.chain.from_iterable(list_of_lists))
-        #for obj in list_of_all_objects:
-        #    Physics.__check_for_collision(obj, list_of_all_objects)
+        for obj in list_of_all_objects:
+            Physics.__check_for_collision(obj, list_of_all_objects)
         for list_of_objects in list_of_lists:
             result_list_of_lists.append(Physics.compute_gravity_influence_for_one_list(list_of_objects,
                                                                                        list_of_all_objects,
@@ -73,7 +73,7 @@ class Physics:
             if r != 0:
                 force.x += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.x - obj2.position.x) / r**3
                 force.y += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.y - obj2.position.y) / r**3
-        print(force)
+        #print(force)
         #print(force.x)
         return force
     @staticmethod
