@@ -12,7 +12,7 @@ class BodyModel:
         self.acceleration = acceleration
         self.velocity = velocity
         self.position = position
-        self.last_position = None
+        self.last_position = position
         self.mass = mass
         self.radius = radius
 

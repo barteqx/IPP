@@ -85,14 +85,19 @@ class Physics:
                 obj2.velocity = v2
     @staticmethod
     def __detect_collision(obj1, obj2):
+
+        if not (obj1.position and obj2.position):
+            return False
+
         v_obj1 = np.array([obj1.position.x, obj1.position.y])
         v_obj2 = np.array([obj2.position.x, obj2.position.y])
 
         v_normal = np.array([v_obj1[0] - v_obj2[0], v_obj1[1] - v_obj2[1]])
 
-        if np.absolute(v_normal) <= (obj1.radius + obj2.radius):
-            if np.absolute(v_normal) < (obj1.radius + obj2.radius):
+        if np.linalg.norm(v_normal) <= (obj1.radius + obj2.radius):
+            if np.linalg.norm(v_normal) < (obj1.radius + obj2.radius):
                 obj1.position, obj2.position = obj1.last_position, obj2.last_position
+            print "collision detected, objects: %d and %d" % (obj1.id, obj2.id)
             return True
 
         else: return False
@@ -100,11 +105,13 @@ class Physics:
     @staticmethod
     def  __compute_velocities_at_collision(obj1, obj2):
 
-        v_obj1 = np.array([obj1.velocity.x, obj1.velocity.y])
-        v_obj2 = np.array([obj2.velocity.x, obj2.velocity.y])
+        v_obj1 = np.array([obj1.velocity.x, obj1.velocity.y], dtype=np.float64)
+        v_obj2 = np.array([obj2.velocity.x, obj2.velocity.y], dtype=np.float64)
 
         v_normal = np.array([v_obj1[0] - v_obj2[0], v_obj1[1] - v_obj2[1]])
-        v_unit_normal = np.divide(v_normal, np.absolute(v_normal))
+        print v_obj1, v_obj2
+        print v_normal
+        v_unit_normal = np.divide(v_normal, np.linalg.norm(v_normal))
         v_unit_tangent = np.array([-1*v_unit_normal[1], v_unit_normal[0]])
 
         v_obj1_normal = np.vdot(v_unit_normal, v_obj1)
