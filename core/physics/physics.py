@@ -8,11 +8,15 @@ __author__ = 'Pawel'
 
 class Physics:
     constG = 6.67 * 10**-11
-
+    force_resistance    = 100
+    velocity_resistance = 30
+    max_force    = 10**6
+    max_velocity = 10**2 * 2
     def __init__(self):
         print Physics.constG
     #zakladam ze kazdy objekt bedzie mial informacje o swoim id, polozeniu, masie, aktualnej predkosci oraz pozycji
     #funkcja zwraca list� obiekt�w z zaktualizowanymi zmiennymi
+
     @staticmethod
     def compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time):
         result_list_of_objects = []
@@ -23,7 +27,7 @@ class Physics:
             velocity = Physics.__compute_velocity(obj.velocity, acceleration, delta_time)
             position = Physics.__compute_position(obj.position, velocity, delta_time)
 
-            result_list_of_objects.append(BodyModel(acceleration, velocity, position, obj.mass))
+            result_list_of_objects.append(BodyModel(acceleration, velocity, position, force, obj.mass))
         #print result_list_of_objects
         return result_list_of_objects
     @staticmethod
@@ -31,8 +35,9 @@ class Physics:
         #lista, w kotrej znajda sie zaktualizowane dane obiektow
         result_list_of_lists = []
         list_of_all_objects = list(itertools.chain.from_iterable(list_of_lists))
-        for obj in list_of_all_objects:
-            Physics.__check_for_collision(obj, list_of_all_objects)
+
+        #for obj in list_of_all_objects:
+        #    Physics.__check_for_collision(obj, list_of_all_objects)
         for list_of_objects in list_of_lists:
             result_list_of_lists.append(Physics.compute_gravity_influence_for_one_list(list_of_objects,
                                                                                        list_of_all_objects,
@@ -45,7 +50,6 @@ class Physics:
         if mass != 0:
             acceleration.x = force.x/mass
             acceleration.y = force.y/mass
-        #print(acceleration)
         return acceleration
 
     @staticmethod
@@ -53,8 +57,8 @@ class Physics:
         velocity = Velocity(oldVelocity.x, oldVelocity.y)
         velocity.x += acceleration.x * deltaTime
         velocity.y += acceleration.y * deltaTime
-        #print(velocity)
-        return velocity
+
+        return Physics.__reduce_attribute(velocity, deltaTime, Physics.max_velocity, Physics.velocity_resistance)
 
     @staticmethod
     def __compute_position(oldPosition, velocity, deltaTime):
@@ -62,20 +66,46 @@ class Physics:
         position = Position(oldPosition.x, oldPosition.y)
         position.x += velocity.x * deltaTime
         position.y += velocity.y * deltaTime
-        #print(position)
+
         return position
 
     @staticmethod
     def __compute_force(listOfObjects, obj1):
-        force = Force(0,0)
+        force = obj1.force
         for obj2 in listOfObjects:
             r = math.sqrt((obj1.position.x - obj2.position.x)**2 + (obj1.position.y - obj2.position.y)**2)
             if r != 0:
                 force.x += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.x - obj2.position.x) / r**3
                 force.y += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.y - obj2.position.y) / r**3
-        #print(force)
-        #print(force.x)
-        return force
+
+        return Physics.__reduce_attribute(force, deltaTime, Physics.max_force, Physics.force_resistance)
+    @staticmethod
+    def __reduce_attribute(attribute, delta_time, max, resistance):
+        if attribute.x > 0:
+            attribute.x -= resistance * delta_time
+
+        if attribute.y > 0:
+            attribute.y -= resistance * delta_time
+
+        if attribute.x < 0:
+            attribute.x += resistance * delta_time
+
+        if attribute.y < 0:
+            attribute.y += resistance * delta_time
+
+        if attribute.x > max:
+            attribute.x = max
+
+        if attribute.y > max:
+            attribute.y = max
+
+        if attribute.x < -max:
+            attribute.x = -max
+
+        if attribute.y < -max:
+            attribute.y = -max
+
+        return attribute
     @staticmethod
     def __check_for_collision(obj, list_of_objects):
         for obj2 in list_of_objects:

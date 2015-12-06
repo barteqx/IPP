@@ -19,7 +19,7 @@ class Velocity:
         self.x = x
         self.y = y
     def __repr__(self):
-        return str("velocity.x: %d velocity.y: %d" % (self.x, self.y))
+        return str("velocity.x: %.20f velocity.y: %.20f" % (self.x, self.y))
 class Position:
     def __init__(self, x, y):
         self.x = x

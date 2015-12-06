@@ -6,7 +6,7 @@ class BodyModel:
     #statyczny licznik modeli
     id = 0
 
-    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), mass = 1, radius=5):
+    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0), mass = 1, radius=5):
         self.id = BodyModel.id
         BodyModel.id += 1
         self.acceleration = acceleration
@@ -15,6 +15,7 @@ class BodyModel:
         self.last_position = position
         self.mass = mass
         self.radius = radius
+        self.force = force
 
     def update_position(self, position):
         self.last_position = self.position

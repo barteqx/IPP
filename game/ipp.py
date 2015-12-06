@@ -11,7 +11,7 @@ import game.states as states
 
 class IPP(object):
 
-    __allowed_pygame_events = [pygame.locals.QUIT, pygame.locals.KEYDOWN]
+    __allowed_pygame_events = [pygame.locals.QUIT, pygame.locals.KEYDOWN, pygame.locals.KEYUP]
 
     def __init__(self):
         pygame.init()

@@ -9,6 +9,7 @@ import core.events.event_aggregator as ea
 import core.state as state
 import game.ipp
 from view import *
+from player_controller import *
 
 class States(object):
 
@@ -95,10 +96,13 @@ class BattleState(State):
         State.__init__(self, event_aggregator)
         self.__next_state = None
         self.view = View()
+        self.player_controller = PlayerController(self.view)
 
     def on_enter(self):
         State.on_enter(self)
         self._event_aggregator.subscribe(self, ea.EventTypes.QUIT)
+        self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.KEYDOWN)
+        self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.KEYUP)
 
     def on_exit(self):
         State.on_exit(self)
