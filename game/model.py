@@ -26,8 +26,8 @@ class Model:
         self.move_speed = 10**6
         self.force_move_addition = 10**5
 
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 50))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 50))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 5))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 5))
         #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**11, 500))
 
         self.list_of_battle_objects.append(self.list_of_players)
@@ -36,7 +36,7 @@ class Model:
 
     def update_battle_state(self, delta_time):
         self.control_service()
-        self.list_of_battle_objects = Physics.compute_gravity_influence(self.list_of_battle_objects, delta_time)
+        Physics.compute_gravity_influence(self.list_of_battle_objects, delta_time)
         self.list_of_players = self.list_of_battle_objects[0]
         self.list_of_planets = self.list_of_battle_objects[1]
         self.list_of_shots   = self.list_of_battle_objects[2]

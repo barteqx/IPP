@@ -19,30 +19,22 @@ class Physics:
 
     @staticmethod
     def compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time):
-        result_list_of_objects = []
-
         for obj in list_of_objects:
-            force = Physics.__compute_force(list_of_all_objects, obj)
-            acceleration = Physics.__compute_acceleration(force, obj.mass)
-            velocity = Physics.__compute_velocity(obj.velocity, acceleration, delta_time)
-            position = Physics.__compute_position(obj.position, velocity, delta_time)
+            force = Physics.__compute_force(list_of_all_objects, obj, delta_time)
+            obj.acceleration = Physics.__compute_acceleration(force, obj.mass)
+            obj.velocity = Physics.__compute_velocity(obj.velocity, obj.acceleration, delta_time)
+            obj.position = Physics.__compute_position(obj.position, obj.velocity, delta_time)
 
-            result_list_of_objects.append(BodyModel(acceleration, velocity, position, force, obj.mass))
-        #print result_list_of_objects
-        return result_list_of_objects
     @staticmethod
     def compute_gravity_influence(list_of_lists, delta_time):
         #lista, w kotrej znajda sie zaktualizowane dane obiektow
-        result_list_of_lists = []
         list_of_all_objects = list(itertools.chain.from_iterable(list_of_lists))
 
         #for obj in list_of_all_objects:
         #    Physics.__check_for_collision(obj, list_of_all_objects)
         for list_of_objects in list_of_lists:
-            result_list_of_lists.append(Physics.compute_gravity_influence_for_one_list(list_of_objects,
-                                                                                       list_of_all_objects,
-                                                                                       delta_time))
-        return result_list_of_lists
+            Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
+
 
     @staticmethod
     def __compute_acceleration(force, mass):
@@ -70,7 +62,7 @@ class Physics:
         return position
 
     @staticmethod
-    def __compute_force(listOfObjects, obj1):
+    def __compute_force(listOfObjects, obj1, delta_time):
         force = obj1.force
         for obj2 in listOfObjects:
             r = math.sqrt((obj1.position.x - obj2.position.x)**2 + (obj1.position.y - obj2.position.y)**2)
@@ -78,7 +70,7 @@ class Physics:
                 force.x += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.x - obj2.position.x) / r**3
                 force.y += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.y - obj2.position.y) / r**3
 
-        return Physics.__reduce_attribute(force, deltaTime, Physics.max_force, Physics.force_resistance)
+        return Physics.__reduce_attribute(force, delta_time, Physics.max_force, Physics.force_resistance)
     @staticmethod
     def __reduce_attribute(attribute, delta_time, max, resistance):
         if attribute.x > 0:
@@ -162,14 +154,4 @@ class Physics:
 
         return Velocity(v_obj1_final[0], v_obj1_final[1]), Velocity(v_obj2_final[0], v_obj2_final[1])
 
-
-def print_list(listOfObjects):
-    for obj in listOfObjects:
-        print "Position.x = %.5f Position.y = %.5f \n------------------" % (obj.position.x, obj.position.y)
-    print "####"
-
-deltaTime = 0.001
-listOfObjects = []
-for x in range(1,4):
-    listOfObjects.append(BodyModel(Acceleration(x, x), Velocity(x, x), Position(x, x), x))
 
