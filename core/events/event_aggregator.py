@@ -55,7 +55,7 @@ class EventTypes(object):
     QUIT = 0x0002
     KEYDOWN = 0x0004
     KEYUP = 0x0005
-
+    DATARECEIVED = 0x0006
 
 class TickEvent(Event):
 
@@ -75,6 +75,11 @@ class KeydownEvent(Event):
         Event.__init__(self, EventTypes.KEYDOWN, args)
 
 class KeyupEvent(Event):
+
+    def __init__(self, args):
+        Event.__init__(self, EventTypes.KEYUP, args)
+
+class DataReceivedEvent(Event):
 
     def __init__(self, args):
         Event.__init__(self, EventTypes.KEYUP, args)

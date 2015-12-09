@@ -33,3 +33,4 @@ class PygameEventLoop(ea.Subscriber):
                 self.__event_aggregator.publish(ea.KeydownEvent(event))
             elif event.type == pygame.locals.KEYUP:
                 self.__event_aggregator.publish(ea.KeyupEvent(event))
+

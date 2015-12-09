@@ -1,4 +1,5 @@
 from physics_variables import *
+from game.config import Config
 __author__ = 'Pawel'
 
 
@@ -16,8 +17,10 @@ class BodyModel:
         self.mass = mass
         self.radius = radius
         self.force = force
-
+        self.json = Config.get("config.json")
     def update_position(self, position):
+        position.x %= self.json.window.size.width
+        position.y %= self.json.window.size.height
         self.last_position = self.position
         self.position = position
     def __repr__(self):

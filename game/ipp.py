@@ -18,6 +18,7 @@ class IPP(object):
         self.__event_aggregator = ea.EventAggregator()
         self.__pygame_event_loop = event_loop.PygameEventLoop(self.__event_aggregator)
         self.__state_machine = state.StateMachine(self.__event_aggregator)
+        # self.client = Client()
 
     def run(self):
         self.__set_context()
@@ -38,7 +39,7 @@ class IPP(object):
 
     def __register_states(self):
         self.__state_machine.register(states.States.Menu, states.MenuState(self.__event_aggregator))
-        self.__state_machine.register(states.States.Battle, states.BattleState(self.__event_aggregator))
+        self.__state_machine.register(states.States.Battle, states.BattleState(self.__event_aggregator)) #self.client
         self.__state_machine.register(states.States.Quit, states.QuitState())
 
 

@@ -90,19 +90,21 @@ class MenuState(State):
                 self.__next_state = States.Quit
 
 
-class BattleState(State):
+class BattleState(State): #client
 
     def __init__(self, event_aggregator):
         State.__init__(self, event_aggregator)
         self.__next_state = None
         self.view = View()
-        self.player_controller = PlayerController(self.view)
+        self.player_controller = PlayerController(self.view) #client
+        self.client_controller = ClientController(event_aggregator)
 
     def on_enter(self):
         State.on_enter(self)
         self._event_aggregator.subscribe(self, ea.EventTypes.QUIT)
         self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.KEYDOWN)
         self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.KEYUP)
+        self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.DATARECEIVED)
 
     def on_exit(self):
         State.on_exit(self)

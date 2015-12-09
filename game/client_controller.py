@@ -3,10 +3,15 @@ import pygame
 import pygame.locals
 __author__ = 'Pawel'
 
-class PlayerController(Subscriber):
-    def __init__(self, view):
-        self.view = view
-        #self.client = client
+class ClientController(Subscriber):
+    def __init__(self, event_aggregator):
+        self.event_aggregator = event_aggregator
+        self.client = Client(lambda msg: self.publish(msg))
+    def publish(self, message):
+
+        #...
+        self.event_aggregator.publish(event)
+
     def notify(self, event):
         if isinstance(event, KeydownEvent):
             if event.args.key == pygame.locals.K_UP:
@@ -41,3 +46,6 @@ class PlayerController(Subscriber):
                 self.view.model.moving_right    = False
                 self.view.model.right_force_set = False
                 self.view.model.right_force_subtraction = True
+
+        if isinstance(event, DataReceivedEvent):
+            #view.model.jazda

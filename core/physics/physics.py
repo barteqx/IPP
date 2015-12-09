@@ -7,7 +7,7 @@ __author__ = 'Pawel'
 
 
 class Physics:
-    constG = 6.67 * 10**-11
+    constG = 6.67 * 10**-10
     force_resistance    = 100
     velocity_resistance = 30
     max_force    = 10**6
@@ -23,7 +23,7 @@ class Physics:
             force = Physics.__compute_force(list_of_all_objects, obj, delta_time)
             obj.acceleration = Physics.__compute_acceleration(force, obj.mass)
             obj.velocity = Physics.__compute_velocity(obj.velocity, obj.acceleration, delta_time)
-            obj.position = Physics.__compute_position(obj.position, obj.velocity, delta_time)
+            obj.update_position(Physics.__compute_position(obj.position, obj.velocity, delta_time))
 
     @staticmethod
     def compute_gravity_influence(list_of_lists, delta_time):

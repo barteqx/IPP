@@ -24,11 +24,11 @@ class Model:
         self.down_force_subtraction = False
 
         self.move_speed = 10**6
-        self.force_move_addition = 10**5
+        self.force_move_addition = 10**6
 
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 5))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 5))
-        #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**11, 500))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25))
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
 
         self.list_of_battle_objects.append(self.list_of_players)
         self.list_of_battle_objects.append(self.list_of_planets)
