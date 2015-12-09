@@ -30,8 +30,8 @@ class Physics:
         #lista, w kotrej znajda sie zaktualizowane dane obiektow
         list_of_all_objects = list(itertools.chain.from_iterable(list_of_lists))
 
-        #for obj in list_of_all_objects:
-        #    Physics.__check_for_collision(obj, list_of_all_objects)
+        for obj in list_of_all_objects:
+            Physics.__check_for_collision(obj, list_of_all_objects)
         for list_of_objects in list_of_lists:
             Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
 
@@ -120,6 +120,7 @@ class Physics:
             if np.linalg.norm(v_normal) < (obj1.radius + obj2.radius):
                 obj1.position, obj2.position = obj1.last_position, obj2.last_position
             print "collision detected, objects: %d and %d" % (obj1.id, obj2.id)
+            print v_normal
             return True
 
         else: return False
@@ -133,6 +134,11 @@ class Physics:
         v_normal = np.array([v_obj1[0] - v_obj2[0], v_obj1[1] - v_obj2[1]])
         print v_obj1, v_obj2
         print v_normal
+
+        if not np.linalg.norm(v_normal):
+            print "No colision..."
+            return obj1.velocity, obj2.velocity
+
         v_unit_normal = np.divide(v_normal, np.linalg.norm(v_normal))
         v_unit_tangent = np.array([-1*v_unit_normal[1], v_unit_normal[0]])
 
