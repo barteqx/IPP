@@ -97,7 +97,7 @@ class BattleState(State): #client
         self.__next_state = None
         self.view = View()
         self.player_controller = PlayerController(self.view) #client
-        self.client_controller = ClientController(event_aggregator)
+        #self.client_controller = ClientController(event_aggregator)
 
     def on_enter(self):
         State.on_enter(self)
