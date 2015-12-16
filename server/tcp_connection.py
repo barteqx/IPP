@@ -6,7 +6,7 @@ from twisted.internet.protocol import DatagramProtocol
 
 class EchoUDP(DatagramProtocol):
     def datagramReceived(self, datagram, address):
-        print(datagram)
+        print datagram
         self.transport.write(datagram, address)
 
 class Echo(protocol.Protocol):
