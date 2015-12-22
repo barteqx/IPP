@@ -82,6 +82,6 @@ class KeyupEvent(Event):
 class DataReceivedEvent(Event):
 
     def __init__(self, args):
-        Event.__init__(self, EventTypes.KEYUP, args)
+        Event.__init__(self, EventTypes.DATARECEIVED, args)
 
 

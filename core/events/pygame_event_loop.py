@@ -3,7 +3,7 @@
 import pygame
 import pygame.locals
 import core.events.event_aggregator as ea
-
+from game.client_controller import *
 
 class PygameEventLoop(ea.Subscriber):
 
@@ -26,6 +26,7 @@ class PygameEventLoop(ea.Subscriber):
 
     def __process_events(self):
         events = pygame.event.get()
+
         for event in events:
             if event.type == pygame.locals.QUIT:
                 self.__event_aggregator.publish(ea.QuitEvent())
@@ -33,4 +34,7 @@ class PygameEventLoop(ea.Subscriber):
                 self.__event_aggregator.publish(ea.KeydownEvent(event))
             elif event.type == pygame.locals.KEYUP:
                 self.__event_aggregator.publish(ea.KeyupEvent(event))
+
+
+
 

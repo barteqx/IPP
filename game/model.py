@@ -26,9 +26,10 @@ class Model:
         self.move_speed = 10**6
         self.force_move_addition = 10**6
 
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25))
-        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(25, 200), Force(0, 0), 10, 20))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 100), Force(0, 0), 10, 20))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 100), Force(0, 0), 10, 20))
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**17, 25))
 
         self.list_of_battle_objects.append(self.list_of_players)
         self.list_of_battle_objects.append(self.list_of_planets)
@@ -40,6 +41,8 @@ class Model:
         self.list_of_players = self.list_of_battle_objects[0]
         self.list_of_planets = self.list_of_battle_objects[1]
         self.list_of_shots   = self.list_of_battle_objects[2]
+
+        print self.list_of_players[0]
 
     def control_service(self):
         if self.moving_right:
@@ -62,18 +65,18 @@ class Model:
 
         if self.moving_down:
             if self.down_force_set is not True:
-                self.list_of_players[0].force.y += self.force_move_addition
+                self.list_of_players[0].force.y -= self.force_move_addition
                 self.down_force_set = True
 
         if self.down_force_subtraction:
-            self.list_of_players[0].force.y -= self.force_move_addition
+            self.list_of_players[0].force.y += self.force_move_addition
             self.down_force_subtraction = False
 
         if self.moving_up:
             if self.up_force_set is not True:
-                self.list_of_players[0].force.y -= self.force_move_addition
+                self.list_of_players[0].force.y += self.force_move_addition
                 self.up_force_set = True
 
         if self.up_force_subtraction:
-            self.list_of_players[0].force.y += self.force_move_addition
+            self.list_of_players[0].force.y -= self.force_move_addition
             self.up_force_subtraction = False

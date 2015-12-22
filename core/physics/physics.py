@@ -7,10 +7,10 @@ __author__ = 'Pawel'
 
 
 class Physics:
-    constG = 6.67 * 10**-10
+    constG = 6.6738481*10**(-11)
     force_resistance    = 100
     velocity_resistance = 30
-    max_force    = 10**6
+    max_force    = 10**15
     max_velocity = 10**2 * 2
     def __init__(self):
         print Physics.constG
@@ -20,8 +20,8 @@ class Physics:
     @staticmethod
     def compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time):
         for obj in list_of_objects:
-            force = Physics.__compute_force(list_of_all_objects, obj, delta_time)
-            obj.acceleration = Physics.__compute_acceleration(force, obj.mass)
+            obj.force = Physics.__compute_force(list_of_all_objects, obj, delta_time)
+            obj.acceleration = Physics.__compute_acceleration(obj.force, obj.mass)
             obj.velocity = Physics.__compute_velocity(obj.velocity, obj.acceleration, delta_time)
             obj.update_position(Physics.__compute_position(obj.position, obj.velocity, delta_time))
 
@@ -36,6 +36,7 @@ class Physics:
             Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
 
 
+
     @staticmethod
     def __compute_acceleration(force, mass):
         acceleration = Acceleration(0,0)
@@ -47,10 +48,13 @@ class Physics:
     @staticmethod
     def __compute_velocity(oldVelocity, acceleration, deltaTime):
         velocity = Velocity(oldVelocity.x, oldVelocity.y)
+
         velocity.x += acceleration.x * deltaTime
         velocity.y += acceleration.y * deltaTime
 
-        return Physics.__reduce_attribute(velocity, deltaTime, Physics.max_velocity, Physics.velocity_resistance)
+
+        return velocity
+        #return Physics.__reduce_attribute(velocity, deltaTime, Physics.max_velocity, Physics.velocity_resistance)
 
     @staticmethod
     def __compute_position(oldPosition, velocity, deltaTime):
@@ -63,12 +67,39 @@ class Physics:
 
     @staticmethod
     def __compute_force(listOfObjects, obj1, delta_time):
-        force = obj1.force
+        #force = obj1.force
+        force = Force(0,0)
         for obj2 in listOfObjects:
-            r = math.sqrt((obj1.position.x - obj2.position.x)**2 + (obj1.position.y - obj2.position.y)**2)
-            if r != 0:
-                force.x += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.x - obj2.position.x) / r**3
-                force.y += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.y - obj2.position.y) / r**3
+
+            distance_x = obj2.position.x - obj1.position.x
+            distance_y = obj2.position.x - obj1.position.x
+
+            r = math.sqrt((obj2.position.x - obj1.position.x)**2 + (obj2.position.y - obj1.position.y)**2)
+            if obj1 is not obj2:
+                F = Physics.constG * obj1.mass * obj2.mass / (r**2)
+                theta = math.atan2(obj2.position.y - obj1.position.y, obj2.position.x - obj1.position.x)
+                """        print "start r"
+                print r
+                print "end R"
+                print "StartF"
+                print F
+                print "EndF"
+                print "start cos"
+                print math.cos(theta)
+                print "end cos"
+                print "Start theta"
+                print theta
+                print "end theta"""
+
+                force.x += F * math.cos(theta)
+                force.y += F * math.sin(theta)
+
+
+            #if r != 0:
+            #    force.x += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.x - obj2.position.x) / (r**3)
+            #    force.y += Physics.constG * obj1.mass * obj2.mass * math.fabs(obj1.position.y - obj2.position.y) / (r**3)
+        #return force
+
 
         return Physics.__reduce_attribute(force, delta_time, Physics.max_force, Physics.force_resistance)
     @staticmethod
@@ -119,8 +150,8 @@ class Physics:
         if np.linalg.norm(v_normal) <= (obj1.radius + obj2.radius):
             if np.linalg.norm(v_normal) < (obj1.radius + obj2.radius):
                 obj1.position, obj2.position = obj1.last_position, obj2.last_position
-            print "collision detected, objects: %d and %d" % (obj1.id, obj2.id)
-            print v_normal
+            #print "collision detected, objects: %d and %d" % (obj1.id, obj2.id)
+            #print v_normal
             return True
 
         else: return False
@@ -132,11 +163,11 @@ class Physics:
         v_obj2 = np.array([obj2.velocity.x, obj2.velocity.y], dtype=np.float64)
 
         v_normal = np.array([v_obj1[0] - v_obj2[0], v_obj1[1] - v_obj2[1]])
-        print v_obj1, v_obj2
-        print v_normal
+        #print v_obj1, v_obj2
+        #print v_normal
 
         if not np.linalg.norm(v_normal):
-            print "No colision..."
+            #print "No colision..."
             return obj1.velocity, obj2.velocity
 
         v_unit_normal = np.divide(v_normal, np.linalg.norm(v_normal))
