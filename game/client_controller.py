@@ -7,10 +7,12 @@ class ClientController(Subscriber):
     def __init__(self, event_aggregator):
         self.event_aggregator = event_aggregator
         self.client = Client(lambda msg: self.publish(msg))
-    def publish(self, message):
 
-        #...
-        self.event_aggregator.publish(event)
+        #self.DATARECEIVED = pygame.USEREVENT + 1
+        #self.data_received_event = pygame.event.Event(self.DATARECEIVED, message="DataReceived")
+
+    def publish(self, message):
+        self.event_aggregator.publish(DataReceivedEvent)
 
     def notify(self, event):
         if isinstance(event, KeydownEvent):
@@ -48,4 +50,5 @@ class ClientController(Subscriber):
                 self.view.model.right_force_subtraction = True
 
         if isinstance(event, DataReceivedEvent):
-            #view.model.jazda
+            DataReceivedEvent.args[0]
+            #view.model.zmien odpowiednie rzeczy dla odopowiednich graczy

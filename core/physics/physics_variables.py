@@ -6,7 +6,7 @@ class Force:
         self.x = x
         self.y = y
     def __repr__(self):
-        return str("force.x: %.20f force.y: %.20f" % (self.x, self.y))
+        return str("force.x: %.5f force.y: %.5f" % (self.x, self.y))
 class Acceleration:
     def __init__(self, x, y):
         self.x = x
