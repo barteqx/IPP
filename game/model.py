@@ -1,5 +1,6 @@
 from core.physics.body_model import *
 from core.physics.physics import Physics
+import math
 __author__ = 'Pawel'
 
 
@@ -26,9 +27,21 @@ class Model:
         self.move_speed = 10**6
         self.force_move_addition = 10**6
 
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25))
-        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
+        self.shoot_x_speed = 700
+        self.shoot_y_speed = 700
+
+        self.shoot_radius = 2
+
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player"))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player"))
+        #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 200), Force(1000, 0), 1000, 25,"player"))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(500, 300), Force(-100, 50), 10, 25, "player"))
+        #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25))
+        #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25))
+
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25, "planet"))
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25, "planet"))
 
         self.list_of_battle_objects.append(self.list_of_players)
         self.list_of_battle_objects.append(self.list_of_planets)
@@ -41,6 +54,27 @@ class Model:
         self.list_of_planets = self.list_of_battle_objects[1]
         self.list_of_shots   = self.list_of_battle_objects[2]
 
+
+    def shoot(self):
+        p = self.list_of_players[0]
+        R = p.radius
+        r = self.shoot_radius
+        vx = vy = appx = appy = 0
+        if self.moving_right:
+            vx += self.shoot_x_speed
+            appx += r + R + 2
+        if self.moving_left:
+            vx -= self.shoot_x_speed
+            appx -= r + R + 2
+        if self.moving_down:
+            vy += self.shoot_y_speed
+            appy += r + R + 2
+        if self.moving_up:
+            vy -= self.shoot_y_speed
+            appy -= r + R + 2
+        if vx != 0 or vy != 0:
+            self.list_of_shots.append(BodyModel(Acceleration(0, 0), Velocity(vx, vy), Position(p.position.x + appx
+                                                                           ,p.position.y + appy), Force(0, 0), 1, r, "shoot"))
     def control_service(self):
         if self.moving_right:
             if self.right_force_set is not True:

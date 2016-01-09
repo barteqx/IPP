@@ -7,11 +7,13 @@ __author__ = 'Pawel'
 
 
 class Physics:
+    shoots = 2
     constG = 6.67 * 10**-10
     force_resistance    = 100
     velocity_resistance = 30
     max_force    = 10**6
     max_velocity = 10**2 * 2
+
     def __init__(self):
         print Physics.constG
     #zakladam ze kazdy objekt bedzie mial informacje o swoim id, polozeniu, masie, aktualnej predkosci oraz pozycji
@@ -22,18 +24,26 @@ class Physics:
         for obj in list_of_objects:
             force = Physics.__compute_force(list_of_all_objects, obj, delta_time)
             obj.acceleration = Physics.__compute_acceleration(force, obj.mass)
-            obj.velocity = Physics.__compute_velocity(obj.velocity, obj.acceleration, delta_time)
+            obj.velocity = Physics.__compute_velocity(obj.velocity, obj.acceleration, delta_time, obj.type == "shoot")
             obj.update_position(Physics.__compute_position(obj.position, obj.velocity, delta_time))
 
     @staticmethod
     def compute_gravity_influence(list_of_lists, delta_time):
         #lista, w kotrej znajda sie zaktualizowane dane obiektow
         list_of_all_objects = list(itertools.chain.from_iterable(list_of_lists))
-
+        set_of_ids_to_delete = set([])
         for obj in list_of_all_objects:
-            Physics.__check_for_collision(obj, list_of_all_objects)
+            Physics.__check_for_collision(obj, list_of_all_objects, set_of_ids_to_delete)
         for list_of_objects in list_of_lists:
             Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
+
+        for id in set_of_ids_to_delete:
+            for l in list_of_lists:
+                for obj in l:
+                    if obj.id == id:
+                        l.remove(obj)
+        #for list_of_objects in list_of_lists:
+        #    Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
 
 
     @staticmethod
@@ -45,11 +55,12 @@ class Physics:
         return acceleration
 
     @staticmethod
-    def __compute_velocity(oldVelocity, acceleration, deltaTime):
+    def __compute_velocity(oldVelocity, acceleration, deltaTime, isShoot):
         velocity = Velocity(oldVelocity.x, oldVelocity.y)
         velocity.x += acceleration.x * deltaTime
         velocity.y += acceleration.y * deltaTime
-
+        if isShoot:
+            return velocity
         return Physics.__reduce_attribute(velocity, deltaTime, Physics.max_velocity, Physics.velocity_resistance)
 
     @staticmethod
@@ -99,12 +110,20 @@ class Physics:
 
         return attribute
     @staticmethod
-    def __check_for_collision(obj, list_of_objects):
+    def __check_for_collision(obj, list_of_objects, set_of_ids_to_delete):
         for obj2 in list_of_objects:
             if obj.id is not obj2.id and Physics.__detect_collision(obj, obj2):
-                (v, v2) = Physics.__compute_velocities_at_collision(obj, obj2)
-                obj.velocity = v
-                obj2.velocity = v2
+                print("collision")
+                if obj.type != "planet":
+                    print("shoot smth")
+                    set_of_ids_to_delete.add(obj.id)
+                    if obj2.type == "shoot":
+                        set_of_ids_to_delete.add(obj2.id)
+                        print("shooted : %d" % obj2.id)
+                else:
+                    (v, v2) = Physics.__compute_velocities_at_collision(obj, obj2)
+                    obj.velocity = v
+                    obj2.velocity = v2
     @staticmethod
     def __detect_collision(obj1, obj2):
 
@@ -119,8 +138,8 @@ class Physics:
         if np.linalg.norm(v_normal) <= (obj1.radius + obj2.radius):
             if np.linalg.norm(v_normal) < (obj1.radius + obj2.radius):
                 obj1.position, obj2.position = obj1.last_position, obj2.last_position
-            print "collision detected, objects: %d and %d" % (obj1.id, obj2.id)
-            print v_normal
+            print "collision detected, objects: %d and %d %s %s" % (obj1.id, obj2.id, obj1.type, obj2.type)
+            #print v_normal
             return True
 
         else: return False
@@ -132,11 +151,11 @@ class Physics:
         v_obj2 = np.array([obj2.velocity.x, obj2.velocity.y], dtype=np.float64)
 
         v_normal = np.array([v_obj1[0] - v_obj2[0], v_obj1[1] - v_obj2[1]])
-        print v_obj1, v_obj2
-        print v_normal
+        #print v_obj1, v_obj2
+        #print v_normal
 
         if not np.linalg.norm(v_normal):
-            print "No colision..."
+            #print "No colision..."
             return obj1.velocity, obj2.velocity
 
         v_unit_normal = np.divide(v_normal, np.linalg.norm(v_normal))

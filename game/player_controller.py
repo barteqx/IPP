@@ -21,6 +21,7 @@ class PlayerController(Subscriber):
             if event.args.key == pygame.locals.K_RIGHT:
                 self.view.model.moving_right = True
 
+
         if isinstance(event, KeyupEvent):
             if event.args.key == pygame.locals.K_UP:
                 self.view.model.moving_up = False
@@ -41,3 +42,6 @@ class PlayerController(Subscriber):
                 self.view.model.moving_right    = False
                 self.view.model.right_force_set = False
                 self.view.model.right_force_subtraction = True
+
+            if event.args.key == pygame.locals.K_SPACE:
+                self.view.model.shoot()
