@@ -39,24 +39,24 @@ class KeyupEvent(ServerEvent):
 class UpdateEvent(ServerEvent):
 
     def __init__(self, args):
-        Event.__init__(self, ServerEventTypes.KEYUP, args)
+        Event.__init__(self, ServerEventTypes.UPDATE, args)
 
 class GameStateEvent(ServerEvent):
 
     def __init__(self, args):
-        Event.__init__(self, ServerEventTypes.KEYUP, args)
+        Event.__init__(self, ServerEventTypes.GAMESTATE, args)
 
 class ObjectCreationEvent(ServerEvent):
 
     def __init__(self, args):
-        Event.__init__(self, ServerEventTypes.KEYUP, args)
+        Event.__init__(self, ServerEventTypes.OBJECTCREATION, args)
 
 class ObjectDestructionEvent(ServerEvent):
 
     def __init__(self, args):
-        Event.__init__(self, ServerEventTypes.KEYUP, args)
+        Event.__init__(self, ServerEventTypes.OBJECTDESTRUCTION, args)
 
 class CollisionEvent(ServerEvent):
 
     def __init__(self, args):
-        Event.__init__(self, ServerEventTypes.KEYUP, args)
+        Event.__init__(self, ServerEventTypes.COLLISION, args)

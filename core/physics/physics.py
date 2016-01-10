@@ -42,6 +42,7 @@ class Physics:
                 for obj in l:
                     if obj.id == id:
                         l.remove(obj)
+        return set_of_ids_to_delete
         #for list_of_objects in list_of_lists:
         #    Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
 

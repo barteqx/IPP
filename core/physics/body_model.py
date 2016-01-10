@@ -19,15 +19,18 @@ class BodyModel:
         self.force = force
         self.type = type
         self.json = Config.get("config.json")
+
     def update_position(self, position):
         position.x %= self.json.window.size.width
         position.y %= self.json.window.size.height
         self.last_position = self.position
         self.position = position
+
     def __repr__(self):
         return str("Acl:(x)%d(y)%d Vel:(x)%d(y)%d Pos:(x)%d(y)%d Mass:%d R: %d" % (self.acceleration.x, self.acceleration.y,
                                                             self.velocity.x, self.velocity.y, self.position.x,
         self.position.y, self.mass, self.radius))
+
     def __str__(self):
         return str("Acl:(x)%.15f(y)%.15f Vel:(x)%.5f(y)%.5f Pos:(x)%d(y)%d Mass:%d R: %d force:(x)%d (y)%d" % (self.acceleration.x, self.acceleration.y,
                                                             self.velocity.x, self.velocity.y, self.position.x,

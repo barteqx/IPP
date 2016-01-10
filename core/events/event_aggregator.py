@@ -3,7 +3,6 @@
 import weakref
 import abc
 
-
 class EventAggregator(object):
 
     def __init__(self):
@@ -20,6 +19,8 @@ class EventAggregator(object):
         del self.__event_subscribers[event_type][subscriber_id]
 
     def publish(self, event):
+        if not event.type in self.__event_subscribers.keys(): return
+
         subscribers = self.__event_subscribers[event.type]
         for subscriber in subscribers.itervaluerefs():
             subscriber().notify(event)

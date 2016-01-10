@@ -2,6 +2,8 @@ __author__ = 'bartoszzasieczny'
 from twisted.internet import reactor
 
 from server_events import *
+from tcp_connection import *
+from udp_communication import *
 
 class Connection(object):
 
