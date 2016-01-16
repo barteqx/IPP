@@ -7,7 +7,7 @@ class BodyModel:
     #statyczny licznik modeli
     id = 0
 
-    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0), mass = 1, radius=5, type = ""):
+    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0), mass = 1, radius=5, type = "",this_client=False):
         self.id = BodyModel.id
         BodyModel.id += 1
         self.acceleration = acceleration
@@ -19,6 +19,7 @@ class BodyModel:
         self.force = force
         self.type = type
         self.json = Config.get("config.json")
+        self.this_client = this_client
 
     def update_position(self, position):
         position.x %= self.json.window.size.width
