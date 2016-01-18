@@ -1,13 +1,14 @@
 import pygame
 from core.physics.body_model import *
 from model import *
+import sys
 __author__ = 'Pawel'
 
 class View:
     def __init__(self):
         self.model = Model()
         self.font = self.make_font(15)
-        self.text = self.font.render("player", True, (0, 128, 0))
+        self.text = self.font.render(sys.argv[1], True, (0, 128, 0))
     def render_battle_state(self, delta_time, screen):
         self.model.update_battle_state(delta_time)
         for model in self.model.list_of_players:
