@@ -17,6 +17,7 @@ class Server(object):
     def runserver(self):
         print "Running physics"
         self.physics.start()
+        self.connection.set_up_connection()
 
 
 if __name__ == "__main__":

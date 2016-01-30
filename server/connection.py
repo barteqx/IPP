@@ -41,7 +41,7 @@ class Connection(object):
 
     def set_up_connection(self):
         self.factory.protocol = TCPConnection
-        reactor.listen(self.config.port_TCP, self.factory)
+        reactor.listenTCP(self.config.port_TCP, self.factory)
 
         reactor.run()
 
