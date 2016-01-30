@@ -3,11 +3,12 @@ __author__ = 'Pawel'
 
 class TcpClient(protocol.Protocol):
 
-    def __init__(self, msg_callback):
+    def __init__(self, msg_callback, handshake_message):
         self.msg_callback = msg_callback
+        self.handshake_message = handshake_message
 
     def connectionMade(self):
-        self.transport.write("Hi, my name is ... ")
+        self.transport.write(self.handshake_message)
 
     def dataReceived(self, data):
         self.msg_callback(data)
@@ -21,11 +22,12 @@ class TcpFactory(protocol.ClientFactory):
 
     client_protocol = None
 
-    def __init__(self, msg_callback):
+    def __init__(self, msg_callback, handshake_message):
         self.msg_callback = msg_callback
+        self.handshake_message = handshake_message
 
     def buildProtocol(self, addr):
-        TcpFactory.client_protocol = TcpClient(self.msg_callback)
+        TcpFactory.client_protocol = TcpClient(self.msg_callback, self.handshake_message)
         return TcpFactory.client_protocol
 
     @staticmethod

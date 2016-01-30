@@ -9,28 +9,32 @@ An example client. Run simpleserv.py first before running this.
 
 
 from multiprocessing import Process
-from core.communication_model import PlayerMovement
+from core.communication_model import PlayerDescription
+import threading
 
 # a client protocol
-class Client(Process):
-    def __init__(self, msg_callback, host, port):
-        Process.__init__(self)
+class Client(threading.Thread):
+    def __init__(self, msg_callback, host, port, name="pawel", udp_port=8001):
+        threading.Thread.__init__(self)
         print(host)
         print(port)
         self.msg_callback = msg_callback
         self.host = host
-        self.udp_datagram_protocol = UdpDatagramProtocol(lambda msg: self.udp_data_received(msg), host)
-        self.tcp_factory = TcpFactory(lambda msg: self.tcp_data_received(msg))
+        self.name = name
+        self.udp_port = udp_port
+        self.handshake_message = pickle.dumps(PlayerDescription(self.name, self.udp_port))
+        self.udp_datagram_protocol = UdpDatagramProtocol(self.udp_data_received, host)
+        self.tcp_factory = TcpFactory(self.tcp_data_received, self.handshake_message)
         self.port = port
         self.is_connected = False
         self.is_listening_on_udp = False
-        self.run()
+
     def udp_data_received(self, msg):
-        decoded_msg = pickle.dumps(msg)
+        decoded_msg = pickle.load(msg)
         self.msg_callback(decoded_msg)
 
     def tcp_data_received(self, msg):
-        decoded_msg = pickle.dumps(msg)
+        decoded_msg = pickle.load(msg)
         self.msg_callback(decoded_msg)
 
     def listen_on_udp(self):
@@ -38,7 +42,7 @@ class Client(Process):
         self.is_listening_on_udp = True
 
     def tcp_send_data(self, data):
-        encoded_msg = pickle.loads(data)
+        encoded_msg = pickle.dumps(data)
         try:
             TcpFactory.sendData(encoded_msg)
         except ClientProtocolNotInitializedException:

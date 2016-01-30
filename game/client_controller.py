@@ -4,14 +4,16 @@ import pygame
 import pygame.locals
 import game.config as config
 from core.communication_model import PlayerMovement
+
 __author__ = 'Pawel'
 
 class ClientController(Subscriber):
     def __init__(self, event_aggregator):
         self.event_aggregator = event_aggregator
         self.config = config.Config.get('config.json')
-        self.client = Client(lambda msg: self.publish(msg), self.config.connect.host, self.config.connect.port)
+        self.client = Client(self.publish, self.config.connect.host, self.config.connect.port)
         self.player_movement = PlayerMovement(False, False, False, False, False)
+        self.client.start()
         #self.DATARECEIVED = pygame.USEREVENT + 1
         #self.data_received_event = pygame.event.Event(self.DATARECEIVED, message="DataReceived")
 
