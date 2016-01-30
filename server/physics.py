@@ -54,10 +54,10 @@ class PhysicsProcess(Process):
             self.send_objects_update(self.ids_to_delete, list_of_all_objects)
             self.ids_to_delete = set()
 
-            print "Object count: " + str(len(list_of_all_objects))
-            print "Positions:"
-            for obj in list_of_all_objects:
-                print '%d: ' % obj.id, obj
+            # print "Object count: " + str(len(list_of_all_objects))
+            # print "Positions:"
+            # for obj in list_of_all_objects:
+            #     print '%d: ' % obj.id, obj
 
         sleep(self.update_interval)
 
