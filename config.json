@@ -8,5 +8,9 @@
     "game": {
         "name": "IPP",
         "fps": 30
+    },
+    "connect": {
+        "host": "localhost",
+        "port": 8009
     }
 }

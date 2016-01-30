@@ -9,6 +9,7 @@ An example client. Run simpleserv.py first before running this.
 
 
 from multiprocessing import Process
+from core.communication_model import PlayerMovement
 
 # a client protocol
 class Client(Process):
@@ -44,3 +45,7 @@ class Client(Process):
         reactor.connectTCP(self.host, self.port, self.tcp_factory)
         reactor.run()
         self.is_connected = True
+
+    def handle_player_movement(self, player_movement):
+        print("client handle player movement method")
+        #self.tcp_send_data(player_movement)

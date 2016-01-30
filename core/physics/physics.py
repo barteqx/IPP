@@ -20,12 +20,14 @@ class Physics:
     #funkcja zwraca list� obiekt�w z zaktualizowanymi zmiennymi
 
     @staticmethod
-    def compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time):
+    def compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time, set_of_ids_to_delete):
         for obj in list_of_objects:
             force = Physics.__compute_force(list_of_all_objects, obj, delta_time)
             obj.acceleration = Physics.__compute_acceleration(force, obj.mass)
             obj.velocity = Physics.__compute_velocity(obj.velocity, obj.acceleration, delta_time, obj.type == "shoot")
-            obj.update_position(Physics.__compute_position(obj.position, obj.velocity, delta_time))
+
+            if obj.update_position(Physics.__compute_position(obj.position, obj.velocity, delta_time)) and obj.type == "shoot":
+                set_of_ids_to_delete.add(obj.id)
 
     @staticmethod
     def compute_gravity_influence(list_of_lists, delta_time):
@@ -35,7 +37,7 @@ class Physics:
         for obj in list_of_all_objects:
             Physics.__check_for_collision(obj, list_of_all_objects, set_of_ids_to_delete)
         for list_of_objects in list_of_lists:
-            Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
+            Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time, set_of_ids_to_delete)
 
         for id in set_of_ids_to_delete:
             for l in list_of_lists:

@@ -113,3 +113,7 @@ class Model:
         if self.up_force_subtraction:
             self.list_of_players[0].force.y += self.force_move_addition
             self.up_force_subtraction = False
+    def server_update_objects(self, list_of_objects):
+        self.list_of_players = list_of_objects[0]
+        self.list_of_planets = list_of_objects[1]
+        self.list_of_shots   = list_of_objects[2]

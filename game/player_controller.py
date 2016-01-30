@@ -3,6 +3,8 @@ import pygame
 import pygame.locals
 __author__ = 'Pawel'
 
+from core.communication_model import PhysicsUpdate
+
 class PlayerController(Subscriber):
     def __init__(self, view):
         self.view = view
@@ -20,7 +22,6 @@ class PlayerController(Subscriber):
 
             if event.args.key == pygame.locals.K_RIGHT:
                 self.view.model.moving_right = True
-
 
         if isinstance(event, KeyupEvent):
             if event.args.key == pygame.locals.K_UP:
@@ -45,3 +46,7 @@ class PlayerController(Subscriber):
 
             if event.args.key == pygame.locals.K_SPACE:
                 self.view.model.shoot()
+
+        if isinstance(event, DataReceivedEvent):
+            if DataReceivedEvent.args[0].__class__.__name__ == "PhysicsUpdate":
+                self.view.model.server_udpate_objects(DataReceivedEvent.args[0])

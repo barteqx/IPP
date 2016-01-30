@@ -21,11 +21,17 @@ class BodyModel:
         self.json = Config.get("config.json")
         self.this_client = this_client
 
+    #returns true if object is out of map
     def update_position(self, position):
+        is_out = False
+        if position.x < 0 or position.x > self.json.window.size.width or position.y < 0 or position.y > self.json.window.size.height:
+            is_out = True
         position.x %= self.json.window.size.width
         position.y %= self.json.window.size.height
         self.last_position = self.position
         self.position = position
+
+        return is_out
 
     def __repr__(self):
         return str("Acl:(x)%d(y)%d Vel:(x)%d(y)%d Pos:(x)%d(y)%d Mass:%d R: %d" % (self.acceleration.x, self.acceleration.y,
