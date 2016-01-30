@@ -15,6 +15,8 @@ from core.communication_model import PlayerMovement
 class Client(Process):
     def __init__(self, msg_callback, host, port):
         Process.__init__(self)
+        print(host)
+        print(port)
         self.msg_callback = msg_callback
         self.host = host
         self.udp_datagram_protocol = UdpDatagramProtocol(lambda msg: self.udp_data_received(msg), host)
@@ -22,6 +24,7 @@ class Client(Process):
         self.port = port
         self.is_connected = False
         self.is_listening_on_udp = False
+        self.run()
     def udp_data_received(self, msg):
         decoded_msg = pickle.dumps(msg)
         self.msg_callback(decoded_msg)

@@ -116,13 +116,13 @@ class Physics:
     def __check_for_collision(obj, list_of_objects, set_of_ids_to_delete):
         for obj2 in list_of_objects:
             if obj.id is not obj2.id and Physics.__detect_collision(obj, obj2):
-                print("collision")
+                #print("collision")
                 if obj.type != "planet":
-                    print("shoot smth")
+                    #print("shoot smth")
                     set_of_ids_to_delete.add(obj.id)
                     if obj2.type == "shoot":
                         set_of_ids_to_delete.add(obj2.id)
-                        print("shooted : %d" % obj2.id)
+                        #print("shooted : %d" % obj2.id)
                 else:
                     (v, v2) = Physics.__compute_velocities_at_collision(obj, obj2)
                     obj.velocity = v
@@ -141,7 +141,7 @@ class Physics:
         if np.linalg.norm(v_normal) <= (obj1.radius + obj2.radius):
             if np.linalg.norm(v_normal) < (obj1.radius + obj2.radius):
                 obj1.position, obj2.position = obj1.last_position, obj2.last_position
-            print "collision detected, objects: %d and %d %s %s" % (obj1.id, obj2.id, obj1.type, obj2.type)
+            #print "collision detected, objects: %d and %d %s %s" % (obj1.id, obj2.id, obj1.type, obj2.type)
             #print v_normal
             return True
 
