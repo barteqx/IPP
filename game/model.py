@@ -79,6 +79,7 @@ class Model:
         if vx != 0 or vy != 0:
             self.list_of_shots.append(BodyModel(Acceleration(0, 0), Velocity(vx, vy), Position(p.position.x + appx
                                                                            ,p.position.y + appy), Force(0, 0), 1, r, "shoot", False, self.width, self.height))
+
     def control_service(self):
         if self.moving_right:
             if self.right_force_set is not True:
