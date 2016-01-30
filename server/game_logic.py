@@ -10,8 +10,8 @@ class GameLogic(object):
 
 def game_logic_init(event_aggregator, config):
 
-    connection_process = GameLogic(config, event_aggregator.publish)
+    game_logic = GameLogic(config, event_aggregator.publish)
 
     # subscribe for events
 
-    return connection_process
+    return game_logic

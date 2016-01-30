@@ -4,5 +4,5 @@ from twisted.internet.protocol import DatagramProtocol
 
 
 class UDPCommunication(DatagramProtocol):
-    def datagramReceived(self, datagram, address):
-        print datagram
+    def sendData(self, datagram, address, port):
+        self.transport.write(datagram, (address, port))

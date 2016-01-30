@@ -7,7 +7,7 @@ class BodyModel:
     #statyczny licznik modeli
     id = 0
 
-    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0), mass = 1, radius=5, type = "",this_client=False):
+    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0), mass = 1, radius=5, type = "",this_client=False, addr="", port=0, name=None):
         self.id = BodyModel.id
         BodyModel.id += 1
         self.acceleration = acceleration
@@ -20,6 +20,9 @@ class BodyModel:
         self.type = type
         self.json = Config.get("config.json")
         self.this_client = this_client
+        self.addr = addr
+        self.port = port
+        self.name = name
 
     #returns true if object is out of map
     def update_position(self, position):
