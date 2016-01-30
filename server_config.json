@@ -6,5 +6,6 @@
     },
     "fps": 100,
     "update_interval": 100
-  }
+  },
+  "port_TCP": 8000
 }

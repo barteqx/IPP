@@ -50,10 +50,9 @@ class PhysicsProcess(Process):
 
         if self.update_counter == self.config.world.update_interval:
             self.update_counter %= self.config.world.update_interval
-            self.send_objects_update(self.ids_to_delete)
-            self.ids_to_delete = set()
-
             list_of_all_objects = list(itertools.chain.from_iterable(self.objects))
+            self.send_objects_update(self.ids_to_delete, list_of_all_objects)
+            self.ids_to_delete = set()
 
             print "Object count: " + str(len(list_of_all_objects))
             print "Positions:"
@@ -62,9 +61,9 @@ class PhysicsProcess(Process):
 
         sleep(self.update_interval)
 
-    def send_objects_update(self, ids_to_delete):
+    def send_objects_update(self, ids_to_delete, all_objects):
         self.publish(UpdateEvent({
-            "objects": self.objects,
+            "objects": all_objects,
             "ids_to_delete": ids_to_delete
         }))
 
