@@ -7,7 +7,8 @@ class BodyModel:
     #statyczny licznik modeli
     id = 0
 
-    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0), mass = 1, radius=5, type = "",this_client=False, addr="", port=0, name=None):
+    def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0),
+                 mass = 1, radius=5, type = "", this_client=False,width=1, height=1,  addr="", port=0, name=None):
         self.id = BodyModel.id
         BodyModel.id += 1
         self.acceleration = acceleration
@@ -18,19 +19,21 @@ class BodyModel:
         self.radius = radius
         self.force = force
         self.type = type
-        self.json = Config.get("config.json")
+
         self.this_client = this_client
         self.addr = addr
         self.port = port
         self.name = name
-
+        self.width = width
+        self.height = height
     #returns true if object is out of map
     def update_position(self, position):
         is_out = False
-        if position.x < 0 or position.x > self.json.window.size.width or position.y < 0 or position.y > self.json.window.size.height:
+        if position.x < 0 or position.x > self.width or position.y < 0 or position.y > self.height:
             is_out = True
-        position.x %= self.json.window.size.width
-        position.y %= self.json.window.size.height
+
+        position.x %= self.width
+        position.y %= self.height
         self.last_position = self.position
         self.position = position
 

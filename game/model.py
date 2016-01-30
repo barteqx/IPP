@@ -32,18 +32,20 @@ class Model:
         self.shoot_y_speed = 700
 
         self.shoot_radius = 2
+        self.json = Config.get("config.json")
+        self.width = self.json.window.size.width
+        self.height = self.json.window.size.height
 
-
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", True))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player"))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", True, self.width, self.height))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player", False, self.width, self.height))
         #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 200), Force(1000, 0), 1000, 25,"player"))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(500, 300), Force(-100, 50), 10, 25, "player"))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 200), Force(1000, 0), 1000, 25,"player", False, self.width, self.height))
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(500, 300), Force(-100, 50), 10, 25, "player", False, self.width, self.height))
         #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25))
         #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25))
 
-        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25, "planet"))
-        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25, "planet"))
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25, "planet", False, self.width, self.height))
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25, "planet", False, self.width, self.height))
 
         self.list_of_battle_objects.append(self.list_of_players)
         self.list_of_battle_objects.append(self.list_of_planets)
@@ -76,7 +78,7 @@ class Model:
             appy -= r + R + 2
         if vx != 0 or vy != 0:
             self.list_of_shots.append(BodyModel(Acceleration(0, 0), Velocity(vx, vy), Position(p.position.x + appx
-                                                                           ,p.position.y + appy), Force(0, 0), 1, r, "shoot"))
+                                                                           ,p.position.y + appy), Force(0, 0), 1, r, "shoot", False, self.width, self.height))
     def control_service(self):
         if self.moving_right:
             if self.right_force_set is not True:
