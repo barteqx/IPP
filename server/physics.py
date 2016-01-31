@@ -112,13 +112,13 @@ class PhysicsProcess(Thread):
 
     def create_player(self, player_info):
 
-        acceleration = Acceleration(0, 0)
+        """acceleration = Acceleration(0, 0)
         velocity = Velocity(0, 0)
         position = Physics.compute_new_position_for_player(self.objects)
         force = Force(0, 0)
         mass = 10
-        radius = 25
-        player = (BodyModel(acceleration, velocity, position, force, mass, radius,
+        radius = 25"""
+        player = (BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 10, 25,
                                               "player", False, self.config.world.size.width, self.config.world.size.height,
                             port = player_info["udp_port"], addr = player_info["addr"],name = player_info["name"] ))
         """player = BodyModel(acceleration = acceleration,
