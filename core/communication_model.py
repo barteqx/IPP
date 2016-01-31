@@ -37,6 +37,6 @@ class ObjectDestruction:
         self.id = id
 
 class HandshakeResponse:
-    def __init__(self, id, ok=True):
-        self.id = id
+    def __init__(self, obj, ok=True):
+        self.obj = obj
         self.ok = ok

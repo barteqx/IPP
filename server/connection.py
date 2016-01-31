@@ -30,19 +30,10 @@ class Connection(object):
             physics_update = PhysicsUpdate(event.args["objects"], event.args["ids_to_delete"])
             self.pickle_and_send_to_all(physics_update, True)
 
-        if event.type == ServerEventTypes.OBJECTCREATION:
-            creation = ObjectCreation(event.args["object"], event.args["object_type"])
-            self.mapping[event.args["addr"]] = MappingEntry(event.args["object"])
-            self.pickle_and_send_to_all(creation)
-
-        if event.type == ServerEventTypes.OBJECTDESTRUCTION:
-            destruction = ObjectDestruction(event.args["object"].id)
-            del self.mapping[event.args["object"].addr]
-            self.pickle_and_send_to_all(destruction)
-
         if event.type == ServerEventTypes.HANDSHAKERESPONSE:
-            handshake_response = HandshakeResponse(event.args["object"].id, event.args["ok"])
+            handshake_response = HandshakeResponse(event.args["object"], event.args["ok"])
             pickled = pickle.dumps(handshake_response)
+            self.mapping[event.args["addr"]] = MappingEntry(event.args["object"])
             self.factory.clients[event.args["object"].addr].tcp_send_data(pickled)
 
     def set_up_connection(self):

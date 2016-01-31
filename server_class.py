@@ -1,6 +1,5 @@
 from server.physics import *
 from server.connection import *
-from server.game_logic import *
 from game.config import *
 from core.events.event_aggregator import *
 
@@ -12,10 +11,8 @@ class Server(object):
         self.__event_aggregator = EventAggregator()
         self.physics = physics_init(self.__event_aggregator, self.__config)
         self.connection = connection_init(self.__event_aggregator, self.__config)
-        self.game_logic = game_logic_init(self.__event_aggregator, self.__config)
 
     def runserver(self):
-        print "Running physics"
         self.physics.start()
         self.connection.set_up_connection()
 

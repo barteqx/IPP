@@ -75,13 +75,43 @@ class PhysicsProcess(Thread):
             self.calculateFrame()
 
     def subscribe_to_events(self):
-        self.event_aggregator.subscribe(self, ServerEventTypes.OBJECTCREATION)
-        self.event_aggregator.subscribe(self, ServerEventTypes.OBJECTDESTRUCTION)
         self.event_aggregator.subscribe(self, ServerEventTypes.PLAYERMOVEMENT)
+        self.event_aggregator.subscribe(self, ServerEventTypes.HANDSHAKE)
+        self.event_aggregator.subscribe(self, ServerEventTypes.QUIT)
 
     def notify(self, event):
-        pass
 
+        if event.type == ServerEventTypes.HANDSHAKE:
+            player = self.create_player(event.args)
+            args = {
+                "object": player
+            }
+            self.publish(HandshakeResponseEvent(args))
+
+
+    def publish(self, event):
+        self.event_aggregator.publish(event)
+
+    def create_player(self, player_info):
+
+        acceleration = Acceleration(0, 0)
+        velocity = Velocity(0, 0)
+        position = __compute_new_position_for_player(self.objects)
+        force = Force(0, 0)
+        mass = 10
+        radius = 25
+
+        player = BodyModel(acceleration,
+                  velocity,
+                  position,
+                  force,
+                  mass,
+                  radius,
+                  player_info["name"])
+
+        self.list_of_players.append(player)
+
+        return player
 
 def physics_init(event_aggregator, config):
 

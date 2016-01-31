@@ -183,7 +183,9 @@ class Physics:
         v_obj2_final = np.add(vec_obj2_normal, vec_obj2_tangent)
 
         return Velocity(v_obj1_final[0], v_obj1_final[1]), Velocity(v_obj2_final[0], v_obj2_final[1])
-    def  __compute_new_position_for_player(self, list_of_all_objects):
+
+    @staticmethod
+    def  __compute_new_position_for_player(list_of_all_objects):
         tmp = list_of_all_objects[0]
         w = tmp[0].width
         h = tmp[0].height
@@ -198,4 +200,4 @@ class Physics:
                 for obj2 in list:
                     if self.__detect_collision(obj, obj2):
                         collision = True
-        return (x,y)
+        return Position(x,y)
