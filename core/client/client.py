@@ -11,6 +11,7 @@ An example client. Run simpleserv.py first before running this.
 from multiprocessing import Process
 from core.communication_model import PlayerDescription
 import threading
+import copy
 
 # a client protocol
 class Client(threading.Thread):
@@ -61,3 +62,8 @@ class Client(threading.Thread):
 
     def handle_player_movement(self, player_movement):
         self.tcp_send_data(player_movement)
+
+    def get_events(self):
+        events = copy.copy(self.event_queue)
+        self.event_queue = []
+        return events
