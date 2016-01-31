@@ -8,17 +8,27 @@ class View:
     def __init__(self):
         self.model = Model()
         self.font = self.make_font(15)
+        self.names = {}
+        self.init_names()
         self.text = self.font.render(sys.argv[1], True, (0, 128, 0))
+
     def render_battle_state(self, delta_time, screen):
         self.model.update_battle_state(delta_time)
         for model in self.model.list_of_players:
             pygame.draw.circle(screen, (0, 0, 255), (int(model.position.x), int(model.position.y)), model.radius)
-            if(model.this_client):
-                screen.blit(self.text,(model.position.x - self.text.get_width() // 2, (model.position.y - model.radius)- self.text.get_height() // 2))
+            screen.blit(self.names[model.name], (model.position.x - self.text.get_width() // 2, (model.position.y - model.radius)- self.text.get_height() // 2))
         for model in self.model.list_of_planets:
             pygame.draw.circle(screen, (0, 255, 255), (int(model.position.x), int(model.position.y)), model.radius)
         for model in self.model.list_of_shots:
             pygame.draw.circle(screen, (255, 255, 255), (int(model.position.x), int(model.position.y)), model.radius)
+        h = 0
+        for text, name in self.names.items():
+            screen.blit(name, (0, 0 + h))
+            h += 20
+
+    def init_names(self):
+        for player in self.model.list_of_players:
+            self.names[player.name] = self.font.render(player.name, True, (0, 128, 0))
 
     def make_font(self, size):
         available = pygame.font.get_fonts()

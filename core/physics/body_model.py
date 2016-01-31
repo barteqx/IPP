@@ -8,7 +8,7 @@ class BodyModel:
     id = 0
 
     def __init__(self, acceleration = Acceleration(0,0), velocity = Velocity(0,0), position = Position(10,20), force = Force(0, 0),
-                 mass = 1, radius=5, type = "", this_client=False,width=1, height=1,  addr="", port=0, name=None):
+                 mass = 1, radius=5, type = "", this_client=False,width=1, height=1,  addr="", port=0, name="player"):
         self.id = BodyModel.id
         BodyModel.id += 1
         self.acceleration = acceleration

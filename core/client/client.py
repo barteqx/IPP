@@ -16,8 +16,7 @@ import threading
 class Client(threading.Thread):
     def __init__(self, msg_callback, host, port, name="pawel", udp_port=8001):
         threading.Thread.__init__(self)
-        print(host)
-        print(port)
+
         self.msg_callback = msg_callback
         self.host = host
         self.name = name

@@ -1,6 +1,6 @@
 from core.physics.body_model import *
 from core.physics.physics import Physics
-
+import sys
 import math
 __author__ = 'Pawel'
 
@@ -36,6 +36,8 @@ class Model:
         self.width = self.json.window.size.width
         self.height = self.json.window.size.height
 
+        self.this_client_id = 0
+
         self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", True, self.width, self.height))
         self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player", False, self.width, self.height))
         #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
@@ -60,7 +62,11 @@ class Model:
 
 
     def shoot(self):
-        p = self.list_of_players[0]
+        p = None
+        for player in self.list_of_players:
+            if player.id == self.this_client_id:
+                p = player
+        #p = self.list_of_players[0]
         R = p.radius
         r = self.shoot_radius
         vx = vy = appx = appy = 0
@@ -81,42 +87,51 @@ class Model:
                                                                            ,p.position.y + appy), Force(0, 0), 1, r, "shoot", False, self.width, self.height))
 
     def control_service(self):
+        p = None
+        for player in self.list_of_players:
+            if player.id == self.this_client_id:
+                p = player
+
         if self.moving_right:
             if self.right_force_set is not True:
-                self.list_of_players[0].force.x += self.force_move_addition
+                p.force.x += self.force_move_addition
                 self.right_force_set = True
 
         if self.right_force_subtraction:
-            self.list_of_players[0].force.x -= self.force_move_addition
+            p.force.x -= self.force_move_addition
             self.right_force_subtraction = False
 
         if self.moving_left:
             if self.left_force_set is not True:
-                self.list_of_players[0].force.x -= self.force_move_addition
+                p.force.x -= self.force_move_addition
                 self.left_force_set = True
 
         if self.left_force_subtraction:
-            self.list_of_players[0].force.x += self.force_move_addition
+            p.force.x += self.force_move_addition
             self.left_force_subtraction = False
 
         if self.moving_down:
             if self.down_force_set is not True:
-                self.list_of_players[0].force.y += self.force_move_addition
+                p.force.y += self.force_move_addition
                 self.down_force_set = True
 
         if self.down_force_subtraction:
-            self.list_of_players[0].force.y -= self.force_move_addition
+            p.force.y -= self.force_move_addition
             self.down_force_subtraction = False
 
         if self.moving_up:
             if self.up_force_set is not True:
-                self.list_of_players[0].force.y -= self.force_move_addition
+                p.force.y -= self.force_move_addition
                 self.up_force_set = True
 
         if self.up_force_subtraction:
-            self.list_of_players[0].force.y += self.force_move_addition
+            p.force.y += self.force_move_addition
             self.up_force_subtraction = False
+
     def server_update_objects(self, list_of_objects):
         self.list_of_players = list_of_objects[0]
         self.list_of_planets = list_of_objects[1]
         self.list_of_shots   = list_of_objects[2]
+    def set_this_client_id(self, id):
+        self.this_client_id = id
+        self.list_of_players[id].name = sys.argv[1]
