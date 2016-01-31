@@ -24,38 +24,39 @@ class ClientController(Subscriber):
 
     def notify(self, event):
         if isinstance(event, KeydownEvent):
-            if event.args.key == pygame.locals.K_UP:
+            if event.args["event"].key == pygame.locals.K_UP:
                 self.player_movement.moving_up = True
 
-            if event.args.key == pygame.locals.K_DOWN:
+            if event.args["event"].key == pygame.locals.K_DOWN:
                 self.player_movement.moving_down = True
 
-            if event.args.key == pygame.locals.K_LEFT:
+            if event.args["event"].key == pygame.locals.K_LEFT:
                 self.player_movement.moving_left = True
 
-            if event.args.key == pygame.locals.K_RIGHT:
+            if event.args["event"].key == pygame.locals.K_RIGHT:
                 self.player_movement.moving_right = True
 
             self.client.handle_player_movement(self.player_movement)
 
         if isinstance(event, KeyupEvent):
-            if event.args.key == pygame.locals.K_UP:
+            if event.args["event"].key == pygame.locals.K_UP:
                 self.player_movement.moving_up = False
 
-            if event.args.key == pygame.locals.K_DOWN:
+            if event.args["event"].key == pygame.locals.K_DOWN:
                 self.player_movement.moving_down = False
 
-            if event.args.key == pygame.locals.K_LEFT:
+            if event.args["event"].key == pygame.locals.K_LEFT:
                 self.player_movement.moving_left = False
 
-            if event.args.key == pygame.locals.K_RIGHT:
+            if event.args["event"].key == pygame.locals.K_RIGHT:
                 self.player_movement.moving_right = False
 
-            if event.args.key == pygame.locals.K_SPACE:
+            if event.args["event"].key == pygame.locals.K_SPACE:
                 self.player_movement.is_shooting = True
 
             self.client.handle_player_movement(self.player_movement)
         if isinstance(event, TickEvent):
+            print("tick event")
             for e in self.client.get_events():
                 self.publish(e)
 

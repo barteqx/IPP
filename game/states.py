@@ -48,7 +48,7 @@ class State(state.State, ea.Subscriber):
 
     def notify(self, event):
         if isinstance(event, ea.KeydownEvent):
-            if event.args.key == pygame.locals.K_F5:
+            if event.args["event"].key == pygame.locals.K_F5:
                 self.__show_fps = not self.__show_fps
 
     def __draw_fps_stats(self):
@@ -108,7 +108,7 @@ class BattleState(State): #client
         self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.DATARECEIVED)
         self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.KEYDOWN)
         self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.KEYUP)
-        #self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.DATARECEIVED)
+        self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.DATARECEIVED)
         self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.TICK)
 
     def on_exit(self):
@@ -130,7 +130,7 @@ class BattleState(State): #client
         if isinstance(event, ea.QuitEvent):
             self.__next_state = States.Quit
         elif isinstance(event, ea.KeydownEvent):
-            if event.args.key == pygame.locals.K_q:
+            if event.args["event"].key == pygame.locals.K_q:
                 self.__next_state = States.Quit
 
 

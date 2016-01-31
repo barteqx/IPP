@@ -11,40 +11,52 @@ class PlayerController(Subscriber):
         #self.client = client
     def notify(self, event):
         if isinstance(event, KeydownEvent):
-            if event.args.key == pygame.locals.K_UP:
-                self.view.model.moving_up = True
+            id = 0
+            if event.args["ip"] != -1:
+                id = event.args["id"]
+            else:
+                id = self.view.model.this_client_id
 
-            if event.args.key == pygame.locals.K_DOWN:
-                self.view.model.moving_down = True
+            if event.args["event"].key == pygame.locals.K_UP:
+                self.view.model.player_movement_dict[id].moving_up = True
 
-            if event.args.key == pygame.locals.K_LEFT:
-                self.view.model.moving_left = True
+            if event.args["event"].key == pygame.locals.K_DOWN:
+                self.view.model.player_movement_dict[id].moving_down = True
 
-            if event.args.key == pygame.locals.K_RIGHT:
-                self.view.model.moving_right = True
+            if event.args["event"].key == pygame.locals.K_LEFT:
+                self.view.model.player_movement_dict[id].moving_left = True
+
+            if event.args["event"].key == pygame.locals.K_RIGHT:
+                self.view.model.player_movement_dict[id].moving_right = True
 
         if isinstance(event, KeyupEvent):
-            if event.args.key == pygame.locals.K_UP:
-                self.view.model.moving_up = False
-                self.view.model.up_force_set = False
-                self.view.model.up_force_subtraction = True
+            id = 0
+            if event.args["ip"] != -1:
+                id = event.args["id"]
+            else:
+                id = self.view.model.this_client_id
 
-            if event.args.key == pygame.locals.K_DOWN:
-                self.view.model.moving_down = False
-                self.view.model.down_force_set = False
-                self.view.model.down_force_subtraction = True
+            if event.args["event"].key == pygame.locals.K_UP:
+                self.view.model.player_movement_dict[id].moving_up = False
+                self.view.model.player_movement_dict[id].up_force_set = False
+                self.view.model.player_movement_dict[id].up_force_subtraction = True
 
-            if event.args.key == pygame.locals.K_LEFT:
-                self.view.model.moving_left = False
-                self.view.model.left_force_set = False
-                self.view.model.left_force_subtraction = True
+            if event.args["event"].key == pygame.locals.K_DOWN:
+                self.view.model.player_movement_dict[id].moving_down = False
+                self.view.model.player_movement_dict[id].down_force_set = False
+                self.view.model.player_movement_dict[id].down_force_subtraction = True
 
-            if event.args.key == pygame.locals.K_RIGHT:
-                self.view.model.moving_right    = False
-                self.view.model.right_force_set = False
-                self.view.model.right_force_subtraction = True
+            if event.args["event"].key == pygame.locals.K_LEFT:
+                self.view.model.player_movement_dict[id].moving_left = False
+                self.view.model.player_movement_dict[id].left_force_set = False
+                self.view.model.player_movement_dict[id].left_force_subtraction = True
 
-            if event.args.key == pygame.locals.K_SPACE:
+            if event.args["event"].key == pygame.locals.K_RIGHT:
+                self.view.model.player_movement_dict[id].moving_right    = False
+                self.view.model.player_movement_dict[id].right_force_set = False
+                self.view.model.player_movement_dict[id].right_force_subtraction = True
+
+            if event.args["event"].key == pygame.locals.K_SPACE:
                 self.view.model.shoot()
 
         if isinstance(event, DataReceivedEvent):

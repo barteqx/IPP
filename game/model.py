@@ -1,17 +1,12 @@
 from core.physics.body_model import *
 from core.physics.physics import Physics
+import collections
 import sys
 import math
 __author__ = 'Pawel'
 
-
-class Model:
+class PlayerMovementInfo():
     def __init__(self):
-        self.list_of_players = []
-        self.list_of_planets = []
-        self.list_of_shots   = []
-        self.list_of_battle_objects = []
-
         self.moving_right    = False
         self.right_force_set = False
         self.right_force_subtraction = False
@@ -24,6 +19,28 @@ class Model:
         self.moving_down     = False
         self.down_force_set  = False
         self.down_force_subtraction = False
+
+class Model:
+    def __init__(self):
+        self.list_of_players = []
+        self.list_of_planets = []
+        self.list_of_shots   = []
+        self.list_of_battle_objects = []
+
+        self.player_movement_dict = collections.defaultdict(self.default_value_for_md)
+
+        """self.moving_right    = False
+        self.right_force_set = False
+        self.right_force_subtraction = False
+        self.moving_left     = False
+        self.left_force_set  = False
+        self.left_force_subtraction = False
+        self.moving_up       = False
+        self.up_force_set    = False
+        self.up_force_subtraction = False
+        self.moving_down     = False
+        self.down_force_set  = False
+        self.down_force_subtraction = False"""
 
         self.move_speed = 10**6
         self.force_move_addition = 10**6
@@ -53,6 +70,9 @@ class Model:
         self.list_of_battle_objects.append(self.list_of_planets)
         self.list_of_battle_objects.append(self.list_of_shots)
 
+    def default_value_for_md(self):
+        return PlayerMovementInfo()
+
     def update_battle_state(self, delta_time):
         self.control_service()
         Physics.compute_gravity_influence(self.list_of_battle_objects, delta_time)
@@ -70,16 +90,16 @@ class Model:
         R = p.radius
         r = self.shoot_radius
         vx = vy = appx = appy = 0
-        if self.moving_right:
+        if self.player_movement_dict[p.id].moving_right:
             vx += self.shoot_x_speed
             appx += r + R + 2
-        if self.moving_left:
+        if self.player_movement_dict[p.id].moving_left:
             vx -= self.shoot_x_speed
             appx -= r + R + 2
-        if self.moving_down:
+        if self.player_movement_dict[p.id].moving_down:
             vy += self.shoot_y_speed
             appy += r + R + 2
-        if self.moving_up:
+        if self.player_movement_dict[p.id].moving_up:
             vy -= self.shoot_y_speed
             appy -= r + R + 2
         if vx != 0 or vy != 0:
@@ -88,46 +108,47 @@ class Model:
 
     def control_service(self):
         p = None
-
+        print self.this_client_id
         for player in self.list_of_players:
             if player.id == self.this_client_id:
                 p = player
-
-        if self.moving_right:
-            if self.right_force_set is not True:
+        if not p:
+            return
+        if self.player_movement_dict[p.id].moving_right:
+            if self.player_movement_dict[p.id].right_force_set is not True:
                 p.force.x += self.force_move_addition
-                self.right_force_set = True
+                self.player_movement_dict[p.id].right_force_set = True
 
-        if self.right_force_subtraction:
+        if self.player_movement_dict[p.id].right_force_subtraction:
             p.force.x -= self.force_move_addition
-            self.right_force_subtraction = False
+            self.player_movement_dict[p.id].right_force_subtraction = False
 
-        if self.moving_left:
-            if self.left_force_set is not True:
+        if self.player_movement_dict[p.id].moving_left:
+            if self.player_movement_dict[p.id].left_force_set is not True:
                 p.force.x -= self.force_move_addition
-                self.left_force_set = True
+                self.player_movement_dict[p.id].left_force_set = True
 
-        if self.left_force_subtraction:
+        if self.player_movement_dict[p.id].left_force_subtraction:
             p.force.x += self.force_move_addition
-            self.left_force_subtraction = False
+            self.player_movement_dict[p.id].left_force_subtraction = False
 
-        if self.moving_down:
-            if self.down_force_set is not True:
+        if self.player_movement_dict[p.id].moving_down:
+            if self.player_movement_dict[p.id].down_force_set is not True:
                 p.force.y += self.force_move_addition
-                self.down_force_set = True
+                self.player_movement_dict[p.id].down_force_set = True
 
-        if self.down_force_subtraction:
+        if self.player_movement_dict[p.id].down_force_subtraction:
             p.force.y -= self.force_move_addition
-            self.down_force_subtraction = False
+            self.player_movement_dict[p.id].down_force_subtraction = False
 
-        if self.moving_up:
-            if self.up_force_set is not True:
+        if self.player_movement_dict[p.id].moving_up:
+            if self.player_movement_dict[p.id].up_force_set is not True:
                 p.force.y -= self.force_move_addition
-                self.up_force_set = True
+                self.player_movement_dict[p.id].up_force_set = True
 
-        if self.up_force_subtraction:
+        if self.player_movement_dict[p.id].up_force_subtraction:
             p.force.y += self.force_move_addition
-            self.up_force_subtraction = False
+            self.player_movement_dict[p.id].up_force_subtraction = False
 
     def server_update_objects(self, list_of_objects):
         print("server_update_objects")
@@ -138,10 +159,10 @@ class Model:
         #print(len(self.list_of_battle_objects[1]))
 
     def set_this_client_id(self, obj):
-
+        print("set this client id")
         self.this_client_id = obj.id
         self.list_of_players.append(obj)
 
         #self.list_of_players.append(BodyModel(a, v, p, f, mass, 25,
         #                                      "player", True, obj.width, obj.height, port = obj.port, addr = obj.addr))
-        self.list_of_players[0].id = obj.id
+        #self.list_of_players[0].id = obj.id

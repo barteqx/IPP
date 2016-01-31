@@ -31,9 +31,9 @@ class PygameEventLoop(ea.Subscriber):
             if event.type == pygame.locals.QUIT:
                 self.__event_aggregator.publish(ea.QuitEvent())
             elif event.type == pygame.locals.KEYDOWN:
-                self.__event_aggregator.publish(ea.KeydownEvent(event))
+                self.__event_aggregator.publish(ea.KeydownEvent({"event": event, "ip": -1}))
             elif event.type == pygame.locals.KEYUP:
-                self.__event_aggregator.publish(ea.KeyupEvent(event))
+                self.__event_aggregator.publish(ea.KeyupEvent({"event": event, "ip": -1}))
 
 
 
