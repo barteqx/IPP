@@ -51,7 +51,7 @@ class PlayerController(Subscriber):
             print("player controller")
             print(event)
             if event.args.__class__.__name__ == "PhysicsUpdate":
-                self.view.model.server_udpate_objects(event.args)
+                self.view.model.server_udpate_objects(event.args.objet_states)
 
             if event.args.__class__.__name__ == "HandshakeResponse":
                 self.view.model.set_this_client_id(event.args.obj)

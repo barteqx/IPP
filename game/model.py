@@ -90,7 +90,6 @@ class Model:
         p = None
         for player in self.list_of_players:
             if player.id == self.this_client_id:
-                print("wszystko dziala")
                 p = player
 
         if self.moving_right:
