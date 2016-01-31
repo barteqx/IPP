@@ -29,11 +29,12 @@ class Client(threading.Thread):
         self.port = port
         self.is_connected = False
         self.is_listening_on_udp = False
+        self.event_queue = []
 
     def udp_data_received(self, msg):
         decoded_msg = pickle.loads(msg)
         print("udp client")
-        self.msg_callback(decoded_msg)
+        self.event_queue.append(decoded_msg)
 
     def tcp_data_received(self, msg):
         decoded_msg = pickle.loads(msg)
