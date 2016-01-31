@@ -140,35 +140,11 @@ class Model:
         #print(len(self.list_of_battle_objects[1]))
 
     def set_this_client_id(self, obj):
-        acceleration = Acceleration(0, 0)
-        velocity = Velocity(0, 0)
-        position = Physics.compute_new_position_for_player(self.list_of_battle_objects)
-        force = Force(0, 0)
-        mass = 10
-        radius = 25
-
-        player = BodyModel(acceleration = acceleration,
-                            velocity = velocity,
-                            position = position,
-                            force = force,
-                            mass = mass,
-                            radius = radius,
-                            name = "name",
-                            addr = "addr",
-                            port = 8001,
-                            width = self.width,
-                            height = self.height,
-
-
-                  )
-
-        self.list_of_players.append(player)
-        self.this_client_id = player.id
 
         print("set this client id")
         print obj.id
-        #self.this_client_id = obj.id
+        self.this_client_id = obj.id
 
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25,
-                                              "player", True, self.width, self.height, port = obj.port, addr = obj.addr))
-        #self.list_of_players[0].id = obj.id
+        #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25,
+        #                                      "player", True, self.width, self.height, port = obj.port, addr = obj.addr))
+        self.list_of_players[0].id = obj.id
