@@ -16,7 +16,7 @@ class View:
         self.model.update_battle_state(delta_time)
         for model in self.model.list_of_players:
             pygame.draw.circle(screen, (0, 0, 255), (int(model.position.x), int(model.position.y)), model.radius)
-            screen.blit(self.names[model.name], (model.position.x - self.text.get_width() // 2, (model.position.y - model.radius)- self.text.get_height() // 2))
+            #screen.blit(self.names[model.name], (model.position.x - self.text.get_width() // 2, (model.position.y - model.radius)- self.text.get_height() // 2))
         for model in self.model.list_of_planets:
             pygame.draw.circle(screen, (0, 255, 255), (int(model.position.x), int(model.position.y)), model.radius)
         for model in self.model.list_of_shots:

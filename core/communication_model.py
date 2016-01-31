@@ -25,6 +25,9 @@ class PlayerDescription:
 class PlayerQuit:
     pass
 
+class PlayerJoin:
+    def __init__(self, list_of_players):
+        self.list_of_players = list_of_players
 
 class ObjectCreation:
     def __init__(self, game_object, object_type):

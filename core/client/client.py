@@ -29,11 +29,12 @@ class Client(threading.Thread):
         self.is_listening_on_udp = False
 
     def udp_data_received(self, msg):
-        decoded_msg = pickle.load(msg)
+        decoded_msg = pickle.loads(msg)
+        print(decoded_msg)
         self.msg_callback(decoded_msg)
 
     def tcp_data_received(self, msg):
-        decoded_msg = pickle.load(msg)
+        decoded_msg = pickle.loads(msg)
         self.msg_callback(decoded_msg)
 
     def listen_on_udp(self):
@@ -54,4 +55,4 @@ class Client(threading.Thread):
 
     def handle_player_movement(self, player_movement):
         print("client handle player movement method")
-        #self.tcp_send_data(player_movement)
+        self.tcp_send_data(player_movement)

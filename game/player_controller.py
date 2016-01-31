@@ -48,10 +48,11 @@ class PlayerController(Subscriber):
                 self.view.model.shoot()
 
         if isinstance(event, DataReceivedEvent):
+            print("player controller")
+            print(event)
+            if event.args.__class__.__name__ == "PhysicsUpdate":
+                self.view.model.server_udpate_objects(event.args)
 
-            if DataReceivedEvent.args[0].__class__.__name__ == "PhysicsUpdate":
-                self.view.model.server_udpate_objects(DataReceivedEvent.args[0])
-
-            if DataReceivedEvent.args[0].__class__.__name__ == "HandshakeResponse":
-                self.view.model.set_this_client_id(DataReceivedEvent.args[0].obj)
+            if event.args.__class__.__name__ == "HandshakeResponse":
+                self.view.model.set_this_client_id(event.args.obj)
 

@@ -18,6 +18,8 @@ class ClientController(Subscriber):
         #self.data_received_event = pygame.event.Event(self.DATARECEIVED, message="DataReceived")
 
     def publish(self, message):
+        print("publish")
+        print(message)
         self.event_aggregator.publish(DataReceivedEvent(message))
 
     def notify(self, event):

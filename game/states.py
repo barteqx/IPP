@@ -105,6 +105,7 @@ class BattleState(State): #client
         self._event_aggregator.subscribe(self, ea.EventTypes.QUIT)
         self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.KEYDOWN)
         self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.KEYUP)
+        self._event_aggregator.subscribe(self.player_controller, ea.EventTypes.DATARECEIVED)
         self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.KEYDOWN)
         self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.KEYUP)
         self._event_aggregator.subscribe(self.client_controller, ea.EventTypes.DATARECEIVED)
