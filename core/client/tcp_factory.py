@@ -39,7 +39,7 @@ class TcpFactory(protocol.ClientFactory):
         if not TcpFactory.client_protocol:
             raise ClientProtocolNotInitializedException
 
-        TcpFactory.client_protocol.sendData(data)
+        TcpFactory.client_protocol.sendString(data)
 
 class ClientProtocolNotInitializedException(Exception):
     pass
