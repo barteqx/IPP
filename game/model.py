@@ -132,6 +132,7 @@ class Model:
         self.list_of_players = list_of_objects[0]
         self.list_of_planets = list_of_objects[1]
         self.list_of_shots   = list_of_objects[2]
+
     def set_this_client_id(self, obj):
         print("set this client id")
         self.this_client_id = obj.id

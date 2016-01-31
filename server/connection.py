@@ -17,6 +17,9 @@ class MappingEntry:
     def __str__(self):
         return str("%s: ID: %d  UDP port: %d" % (self.addr, self.id, self.port))
 
+    def __repr__(self):
+        return self.__str__()
+
 class Connection(object):
 
     def __init__(self, config, event_aggregator):
@@ -31,7 +34,7 @@ class Connection(object):
 
         if event.type == ServerEventTypes.UPDATE:
             physics_update = PhysicsUpdate(event.args["objects"], event.args["ids_to_delete"])
-            self.pickle_and_send_to_all(physics_update, True)
+            self.pickle_and_send_to_all(physics_update)
 
         if event.type == ServerEventTypes.HANDSHAKERESPONSE:
             handshake_response = HandshakeResponse(event.args["object"], event.args["ok"])
@@ -48,6 +51,19 @@ class Connection(object):
         reactor.run()
 
     def publish(self, message, addr):
+
+        if message == -1:
+            print "Connection to " + addr.host + " lost."
+
+            args = {
+                "id": self.mapping[addr.host].id
+            }
+            self.event_aggregator.publish(QuitEvent(args))
+            del self.factory.clients[addr.host]
+            del self.mapping[addr.host]
+            return
+
+
         msg = pickle.loads(message)
 
         if msg.__class__.__name__ == "PlayerMovement":

@@ -34,8 +34,8 @@ class PhysicsProcess(Thread):
         self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", False, self.width, self.height))
         self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player", False, self.width, self.height))
         #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 200), Force(1000, 0), 1000, 25,"player", False, self.width, self.height))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(500, 300), Force(-100, 50), 10, 25, "player", False, self.width, self.height))
+        # self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 200), Force(1000, 0), 1000, 25,"player", False, self.width, self.height))
+        # self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(500, 300), Force(-100, 50), 10, 25, "player", False, self.width, self.height))
         #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25))
         #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25))
 
@@ -50,8 +50,11 @@ class PhysicsProcess(Thread):
 
 
     def calculateFrame(self):
-        self.objects = [self.list_of_players, self.list_of_planets, self.list_of_shots]
+       #s#  self.objects = [self.list_of_players, self.list_of_planets, self.list_of_shots]
         self.ids_to_delete &= Physics.compute_gravity_influence(self.objects, self.update_interval)
+
+        if self.update_counter == 0:
+             print "Object count: " + str(len(list(itertools.chain.from_iterable(self.objects))))
 
         self.update_counter += 1
 
@@ -118,7 +121,11 @@ class PhysicsProcess(Thread):
                             radius = radius,
                             name = player_info["name"],
                             addr = player_info["addr"],
-                            port = player_info["udp_port"]
+                            port = player_info["udp_port"],
+                            width = self.config.world.size.width,
+                            height = self.config.world.size.height,
+
+
                   )
 
         self.list_of_players.append(player)

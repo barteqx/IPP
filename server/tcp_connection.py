@@ -17,6 +17,9 @@ class TCPConnection(protocol.Protocol):
     def sendData(self, data):
         self.transport.write(data)
 
+    def connectionLost(self, reason):
+        self.publish(-1, self.addr)
+
 
 class TCPFactory(protocol.ServerFactory):
     def __init__(self, msg_callback):
