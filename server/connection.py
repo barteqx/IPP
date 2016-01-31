@@ -95,7 +95,7 @@ class Connection(object):
         for k, v in self.factory.clients.items():
             if k not in self.mapping.keys(): continue
             if not udp:
-                v.sendData(pickled)
+                v.sendString(pickled)
 
             else:
                 self.UDP.sendData(pickled, k, self.mapping[k].port)
