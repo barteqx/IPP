@@ -3,6 +3,7 @@ from body_model import *
 import math
 import numpy as np
 import itertools
+import random
 __author__ = 'Pawel'
 
 
@@ -34,6 +35,7 @@ class Physics:
         #lista, w kotrej znajda sie zaktualizowane dane obiektow
         list_of_all_objects = list(itertools.chain.from_iterable(list_of_lists))
         set_of_ids_to_delete = set([])
+
         for obj in list_of_all_objects:
             Physics.__check_for_collision(obj, list_of_all_objects, set_of_ids_to_delete)
         for list_of_objects in list_of_lists:
@@ -181,5 +183,19 @@ class Physics:
         v_obj2_final = np.add(vec_obj2_normal, vec_obj2_tangent)
 
         return Velocity(v_obj1_final[0], v_obj1_final[1]), Velocity(v_obj2_final[0], v_obj2_final[1])
-
-
+    def  __compute_new_position_for_player(self, list_of_all_objects):
+        tmp = list_of_all_objects[0]
+        w = tmp[0].width
+        h = tmp[0].height
+        collision = True
+        x = y = 0
+        while collision:
+            collision = False
+            x = random.randint(0, w)
+            y = random.randint(0, h)
+            obj = BodyModel(position = Position(x,y))
+            for list in list_of_all_objects:
+                for obj2 in list:
+                    if self.__detect_collision(obj, obj2):
+                        collision = True
+        return (x,y)
