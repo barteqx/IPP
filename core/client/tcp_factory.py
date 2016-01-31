@@ -8,9 +8,11 @@ class TcpClient(protocol.Protocol):
         self.handshake_message = handshake_message
 
     def connectionMade(self):
+        print("connection made")
         self.transport.write(self.handshake_message)
 
     def dataReceived(self, data):
+        print("data received")
         self.msg_callback(data)
 
     def connectionLost(self, reason):

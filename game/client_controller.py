@@ -11,7 +11,7 @@ class ClientController(Subscriber):
     def __init__(self, event_aggregator):
         self.event_aggregator = event_aggregator
         self.config = config.Config.get('config.json')
-        self.client = Client(self.publish, self.config.connect.host, self.config.connect.port, sys.argv[0], self.config.connect.udp_port)
+        self.client = Client(self.publish, self.config.connect.host, self.config.connect.port, sys.argv[1], self.config.connect.udp_port)
         self.player_movement = PlayerMovement(False, False, False, False, False)
         self.client.start()
         #self.DATARECEIVED = pygame.USEREVENT + 1

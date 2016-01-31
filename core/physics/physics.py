@@ -4,6 +4,7 @@ import math
 import numpy as np
 import itertools
 import random
+import game.config as config
 __author__ = 'Pawel'
 
 
@@ -186,10 +187,9 @@ class Physics:
 
     @staticmethod
     def compute_new_position_for_player(list_of_all_objects):
-        print list_of_all_objects
-        tmp = list_of_all_objects[0]
-        w = tmp[0].width
-        h = tmp[0].height
+        conf = Config.get('config.json')
+        w = conf.window.size.width
+        h = conf.window.size.height
         collision = True
         x = y = 0
         while collision:

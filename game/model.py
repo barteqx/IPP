@@ -38,7 +38,7 @@ class Model:
 
         self.this_client_id = 0
 
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", True, self.width, self.height))
+        """self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", True, self.width, self.height))
         self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player", False, self.width, self.height))
         #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
         self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 200), Force(1000, 0), 1000, 25,"player", False, self.width, self.height))
@@ -47,7 +47,7 @@ class Model:
         #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25))
 
         self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25, "planet", False, self.width, self.height))
-        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25, "planet", False, self.width, self.height))
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25, "planet", False, self.width, self.height))"""
 
         self.list_of_battle_objects.append(self.list_of_players)
         self.list_of_battle_objects.append(self.list_of_planets)
@@ -132,6 +132,9 @@ class Model:
         self.list_of_players = list_of_objects[0]
         self.list_of_planets = list_of_objects[1]
         self.list_of_shots   = list_of_objects[2]
-    def set_this_client_id(self, id):
-        self.this_client_id = id
-        self.list_of_players[id].name = sys.argv[1]
+    def set_this_client_id(self, obj):
+        print("set this client id")
+        self.this_client_id = obj.id
+        #obj.name = sys.argv[1]
+        self.list_of_players.append(obj)
+        #self.list_of_players[id].name = sys.argv[1]

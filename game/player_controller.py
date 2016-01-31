@@ -53,5 +53,5 @@ class PlayerController(Subscriber):
                 self.view.model.server_udpate_objects(DataReceivedEvent.args[0])
 
             if DataReceivedEvent.args[0].__class__.__name__ == "HandshakeResponse":
-                self.view.model.set_this_client_id(DataReceivedEvent.args[0].id)
+                self.view.model.set_this_client_id(DataReceivedEvent.args[0].obj)
 
