@@ -139,5 +139,7 @@ class Model:
         print obj.id
         self.this_client_id = obj.id
         #obj.name = sys.argv[1]
-        self.list_of_players.append(obj)
+        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25,
+                                              "player", True, self.width, self.height, port = obj.port, addr = obj.addr))
+        self.list_of_players[0].id = obj.id
         #self.list_of_players[id].name = sys.argv[1]

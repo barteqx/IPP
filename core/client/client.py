@@ -51,7 +51,7 @@ class Client(threading.Thread):
     def tcp_send_data(self, data):
         encoded_msg = pickle.dumps(data)
         try:
-            TcpFactory.sendData(encoded_msg)
+            TcpFactory.sendString(encoded_msg)
         except ClientProtocolNotInitializedException:
             print "Client protocol not initialized - cannot send"
 

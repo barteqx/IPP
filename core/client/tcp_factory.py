@@ -1,7 +1,8 @@
 from twisted.internet import reactor, protocol
+from twisted.protocols.basic import NetstringReceiver
 __author__ = 'Pawel'
 
-class TcpClient(protocol.Protocol):
+class TcpClient(NetstringReceiver):
 
     def __init__(self, msg_callback, handshake_message):
         self.msg_callback = msg_callback
@@ -13,15 +14,14 @@ class TcpClient(protocol.Protocol):
         print("connection made 2")
         self.transport.write(self.handshake_message)
 
-    def dataReceived(self, data):
+    def stringReceived(self, data):
         print("data received")
         self.msg_callback(data)
 
     def connectionLost(self, reason):
         print "connection lost"
 
-    def sendData(self, data):
-        self.transport.write(data)
+
 class TcpFactory(protocol.ClientFactory):
 
     client_protocol = None
