@@ -19,7 +19,7 @@ class Client(threading.Thread):
         threading.Thread.__init__(self)
         print(udp_port)
         print(host)
-        self.msg_callback = msg_callback
+        #self.msg_callback = msg_callback
         self.host = host
         self.name = name
         self.udp_port = udp_port
@@ -39,7 +39,7 @@ class Client(threading.Thread):
 
     def tcp_data_received(self, msg):
         decoded_msg = pickle.loads(msg)
-        print("tcp data received")
+        #print "tcp data received: " + msg
         self.event_queue.append(decoded_msg)
 
     def listen_on_udp(self):

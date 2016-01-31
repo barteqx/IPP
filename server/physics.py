@@ -21,18 +21,18 @@ class PhysicsProcess(Thread):
         self.update_counter = 0
         self.ids_to_delete = set()
         self.is_running = False
-
-    def init_objects(self):
         self.list_of_players = []
         self.list_of_planets=[]
         self.list_of_shots = []
 
+    def init_objects(self):
+
         self.json = Config.get("config.json")
         self.width = self.json.window.size.width
         self.height = self.json.window.size.height
-
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", False, self.width, self.height))
-        self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player", False, self.width, self.height))
+        #
+        # self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(100, 200), Force(0, 0), 1000, 25, "player", False, self.width, self.height))
+        # self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(200, 300), Force(0, 0), 10, 25,"player", False, self.width, self.height))
         #self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(0, 0), 10**13, 25))
         # self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(600, 200), Force(1000, 0), 1000, 25,"player", False, self.width, self.height))
         # self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(500, 300), Force(-100, 50), 10, 25, "player", False, self.width, self.height))
@@ -100,6 +100,12 @@ class PhysicsProcess(Thread):
             }
             self.publish(HandshakeResponseEvent(args))
 
+        if event.type == ServerEventTypes.QUIT:
+            print "QUIT " + str(event.args["id"])
+            print self.list_of_players
+            id_not_equal = lambda elem: elem.id != event.args["id"]
+            self.list_of_players = filter(id_not_equal, self.list_of_players)
+            print self.list_of_players
 
     def publish(self, event):
         self.event_aggregator.publish(event)
