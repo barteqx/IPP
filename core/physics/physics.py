@@ -185,7 +185,8 @@ class Physics:
         return Velocity(v_obj1_final[0], v_obj1_final[1]), Velocity(v_obj2_final[0], v_obj2_final[1])
 
     @staticmethod
-    def  __compute_new_position_for_player(list_of_all_objects):
+    def compute_new_position_for_player(list_of_all_objects):
+        print list_of_all_objects
         tmp = list_of_all_objects[0]
         w = tmp[0].width
         h = tmp[0].height
@@ -198,6 +199,6 @@ class Physics:
             obj = BodyModel(position = Position(x,y))
             for list in list_of_all_objects:
                 for obj2 in list:
-                    if self.__detect_collision(obj, obj2):
+                    if Physics.__detect_collision(obj, obj2):
                         collision = True
         return Position(x,y)

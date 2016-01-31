@@ -16,7 +16,7 @@ class PhysicsProcess(Thread):
         Thread.__init__(self)
         self.config = config
         self.event_aggregator = event_aggregator
-        self.objects = [[]]
+        self.objects = []
         self.update_interval = 1.0/self.config.world.fps
         self.update_counter = 0
         self.ids_to_delete = set()
@@ -36,11 +36,13 @@ class PhysicsProcess(Thread):
         #self.list_of_players.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25))
 
         self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(300, 200), Force(50, 50), 1000, 25, "planet"))
-        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25, "planet"))
-
+        self.list_of_planets.append(BodyModel(Acceleration(0, 0), Velocity(0, 0), Position(400, 300), Force(10, 10), 10, 25, "planet")
+)
         self.objects.append(self.list_of_players)
         self.objects.append(self.list_of_planets)
         self.objects.append(self.list_of_shots)
+
+        print self.objects
 
 
     def calculateFrame(self):
@@ -69,6 +71,7 @@ class PhysicsProcess(Thread):
 
     def run(self):
         self.init_objects()
+        self.subscribe_to_events()
 
         self.is_running = True
         while self.is_running:
@@ -82,7 +85,6 @@ class PhysicsProcess(Thread):
     def notify(self, event):
 
         if event.type == ServerEventTypes.HANDSHAKE:
-            print "b"
             player = self.create_player(event.args)
             args = {
                 "object": player
@@ -97,7 +99,7 @@ class PhysicsProcess(Thread):
 
         acceleration = Acceleration(0, 0)
         velocity = Velocity(0, 0)
-        position = __compute_new_position_for_player(self.objects)
+        position = Physics.compute_new_position_for_player(self.objects)
         force = Force(0, 0)
         mass = 10
         radius = 25

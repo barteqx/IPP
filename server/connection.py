@@ -26,7 +26,6 @@ class Connection(object):
     def notify(self, event):
 
         if event.type == ServerEventTypes.UPDATE:
-            print "Sending physics update..."
             physics_update = PhysicsUpdate(event.args["objects"], event.args["ids_to_delete"])
             self.pickle_and_send_to_all(physics_update, True)
 
@@ -59,7 +58,6 @@ class Connection(object):
                 "udp_port": msg.udp_port,
                 "addr": addr.host
             }
-            print "a"
             self.event_aggregator.publish(HandshakeEvent(args))
 
         if msg.__class__.__name__ == "PlayerQuit":
@@ -72,7 +70,6 @@ class Connection(object):
 
     def pickle_and_send_to_all(self, message, udp=False):
         pickled = pickle.dumps(message)
-        print self.mapping
         for k, v in self.factory.clients.items():
             if k not in self.mapping.keys(): continue
             if not udp:
