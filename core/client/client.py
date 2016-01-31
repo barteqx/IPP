@@ -72,3 +72,6 @@ class Client(threading.Thread):
         events = copy.copy(self.event_queue)
         self.event_queue = []
         return events
+
+    def stop_reactor(self):
+        reactor.stop()

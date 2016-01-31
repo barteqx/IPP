@@ -114,6 +114,7 @@ class BattleState(State): #client
     def on_exit(self):
         State.on_exit(self)
         self._event_aggregator.unsubscribe(self, ea.EventTypes.QUIT)
+        self.client_controller.client.stop_reactor()
 
     def next(self):
         if self.__next_state is not None:
