@@ -10,9 +10,7 @@ class TcpClient(NetstringReceiver):
 
     def connectionMade(self):
         print("connection made")
-        self.transport.write(self.handshake_message)
-        print("connection made 2")
-        self.transport.write(self.handshake_message)
+        self.sendString(self.handshake_message)
 
     def stringReceived(self, data):
         print("data received")
