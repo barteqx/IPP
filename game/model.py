@@ -134,9 +134,9 @@ class Model:
         print(len(list_of_objects[1]))
 
 
-        #self.list_of_battle_objects[0] = list_of_objects[0]
-        #self.list_of_battle_objects[1] = list_of_objects[1]
-        #self.list_of_battle_objects[2]   = list_of_objects[2]
+        self.list_of_battle_objects[0] = list_of_objects[0]
+        self.list_of_battle_objects[1] = list_of_objects[1]
+        self.list_of_battle_objects[2]   = list_of_objects[2]
         #print(len(self.list_of_battle_objects[1]))
 
     def set_this_client_id(self, obj):
