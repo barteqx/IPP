@@ -1,5 +1,5 @@
 __author__ = 'bartoszzasieczny'
-from multiprocessing import Process
+from threading import Thread
 from time import sleep
 import itertools
 
@@ -10,10 +10,10 @@ from core.physics.body_model import *
 from server.server_events import *
 
 
-class PhysicsProcess(Process):
+class PhysicsProcess(Thread):
 
     def __init__(self, config, publish_event_callback):
-        Process.__init__(self)
+        Thread.__init__(self)
         self.config = config
         self.publish = publish_event_callback
         self.objects = [[]]

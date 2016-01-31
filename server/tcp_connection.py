@@ -10,6 +10,7 @@ class TCPConnection(protocol.Protocol):
     def __init__(self, msg_callback, addr):
         self.publish = msg_callback
         self.addr = addr
+        print type(addr)
 
     def dataReceived(self, data):
         self.publish(data, self.addr)
