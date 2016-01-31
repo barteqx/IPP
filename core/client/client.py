@@ -40,7 +40,7 @@ class Client(threading.Thread):
     def tcp_data_received(self, msg):
         decoded_msg = pickle.loads(msg)
         print("tcp data received")
-        self.msg_callback(decoded_msg)
+        self.event_queue.append(decoded_msg)
 
     def listen_on_udp(self):
         reactor.listenUDP(self.udp_port, self.udp_datagram_protocol)
