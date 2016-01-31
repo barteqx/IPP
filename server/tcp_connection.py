@@ -14,6 +14,10 @@ class TCPConnection(protocol.Protocol):
     def dataReceived(self, data):
         self.publish(data, self.addr)
 
+    def sendData(self, data):
+        self.transport.write(data)
+
+
 class TCPFactory(protocol.ServerFactory):
     def __init__(self, msg_callback):
         self.publish = msg_callback

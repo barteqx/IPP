@@ -7,11 +7,15 @@ from tcp_connection import *
 from udp_communication import *
 from core.communication_model import *
 
+
 class MappingEntry:
     def __init__(self, obj):
         self.addr = obj.addr
         self.port = obj.port
         self.id = obj.id
+
+    def __str__(self):
+        return str("%s: ID: %d  UDP port: %d" % (self.addr, self.id, self.port))
 
 class Connection(object):
 
@@ -33,12 +37,13 @@ class Connection(object):
             handshake_response = HandshakeResponse(event.args["object"], event.args["ok"])
             pickled = pickle.dumps(handshake_response)
             self.mapping[event.args["object"].addr] = MappingEntry(event.args["object"])
-            self.factory.clients[event.args["object"].addr].tcp_send_data(pickled)
+            self.factory.clients[event.args["object"].addr].sendData(pickled)
 
     def set_up_connection(self):
         print "Setting up connection..."
         self.factory.protocol = TCPConnection
         reactor.listenTCP(self.config.port_TCP, self.factory)
+        reactor.listenUDP(0, self.UDP)
 
         reactor.run()
 
@@ -47,7 +52,7 @@ class Connection(object):
 
         if msg.__class__.__name__ == "PlayerMovement":
             args = {
-                "id": self.mapping[addr].id,
+                "id": self.mapping[addr.host].id,
                 "movement": msg
             }
             self.event_aggregator.publish(PlayerMovementEvent(args))
@@ -70,13 +75,14 @@ class Connection(object):
 
     def pickle_and_send_to_all(self, message, udp=False):
         pickled = pickle.dumps(message)
+        print self.mapping
         for k, v in self.factory.clients.items():
             if k not in self.mapping.keys(): continue
             if not udp:
-                v.tcp_send_data(pickled)
+                v.sendData(pickled)
 
             else:
-                self.UDP.sendData(k, self.mapping[k].port)
+                self.UDP.sendData(pickled, k, self.mapping[k].port)
 
     def subscribe_to_events(self):
         self.event_aggregator.subscribe(self, ServerEventTypes.UPDATE)

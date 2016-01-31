@@ -46,6 +46,7 @@ class PhysicsProcess(Thread):
 
 
     def calculateFrame(self):
+        self.objects = [self.list_of_players, self.list_of_planets, self.list_of_shots]
         self.ids_to_delete &= Physics.compute_gravity_influence(self.objects, self.update_interval)
 
         self.update_counter += 1
@@ -56,10 +57,10 @@ class PhysicsProcess(Thread):
             self.send_objects_update(self.ids_to_delete, list_of_all_objects)
             self.ids_to_delete = set()
 
-            # print "Object count: " + str(len(list_of_all_objects))
-            # print "Positions:"
-            # for obj in list_of_all_objects:
-            #     print '%d: ' % obj.id, obj
+            print "Object count: " + str(len(list_of_all_objects))
+            print "Positions:"
+            for obj in list_of_all_objects:
+                print '%d: ' % obj.id, obj
 
         sleep(self.update_interval)
 
@@ -87,7 +88,8 @@ class PhysicsProcess(Thread):
         if event.type == ServerEventTypes.HANDSHAKE:
             player = self.create_player(event.args)
             args = {
-                "object": player
+                "object": player,
+                "ok": True
             }
             self.publish(HandshakeResponseEvent(args))
 
@@ -104,13 +106,16 @@ class PhysicsProcess(Thread):
         mass = 10
         radius = 25
 
-        player = BodyModel(acceleration,
-                  velocity,
-                  position,
-                  force,
-                  mass,
-                  radius,
-                  player_info["name"])
+        player = BodyModel(acceleration = acceleration,
+                            velocity = velocity,
+                            position = position,
+                            force = force,
+                            mass = mass,
+                            radius = radius,
+                            name = player_info["name"],
+                            addr = player_info["addr"],
+                            port = player_info["udp_port"]
+                  )
 
         self.list_of_players.append(player)
 
