@@ -40,7 +40,7 @@ class Connection(object):
             handshake_response = HandshakeResponse(event.args["object"], event.args["ok"])
             pickled = pickle.dumps(handshake_response)
             self.mapping[event.args["object"].addr] = MappingEntry(event.args["object"])
-            self.factory.clients[event.args["object"].addr].sendData(pickled)
+            self.factory.clients[event.args["object"].addr].sendString(pickled)
 
     def set_up_connection(self):
         print "Setting up connection..."
