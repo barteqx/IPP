@@ -32,8 +32,8 @@ class BodyModel:
         if position.x < 0 or position.x > self.width or position.y < 0 or position.y > self.height:
             is_out = True
 
-        position.x %= self.width
-        position.y %= self.height
+        #position.x %= self.width
+        #position.y %= self.height
         self.last_position = self.position
         self.position = position
 
