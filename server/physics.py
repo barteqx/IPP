@@ -82,6 +82,7 @@ class PhysicsProcess(Thread):
     def notify(self, event):
 
         if event.type == ServerEventTypes.HANDSHAKE:
+            print "b"
             player = self.create_player(event.args)
             args = {
                 "object": player

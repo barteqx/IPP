@@ -33,7 +33,7 @@ class Connection(object):
         if event.type == ServerEventTypes.HANDSHAKERESPONSE:
             handshake_response = HandshakeResponse(event.args["object"], event.args["ok"])
             pickled = pickle.dumps(handshake_response)
-            self.mapping[event.args["addr"]] = MappingEntry(event.args["object"])
+            self.mapping[event.args["object"].addr] = MappingEntry(event.args["object"])
             self.factory.clients[event.args["object"].addr].tcp_send_data(pickled)
 
     def set_up_connection(self):
@@ -46,33 +46,35 @@ class Connection(object):
     def publish(self, message, addr):
         msg = pickle.loads(message)
 
-        if type(msg) == PlayerMovement:
+        if msg.__class__.__name__ == "PlayerMovement":
             args = {
                 "id": self.mapping[addr].id,
                 "movement": msg
             }
             self.event_aggregator.publish(PlayerMovementEvent(args))
 
-
-        if type(msg) == PlayerDescription:
+        if msg.__class__.__name__ == "PlayerDescription":
             args = {
                 "name": msg.name,
                 "udp_port": msg.udp_port,
                 "addr": addr.host
             }
+            print "a"
             self.event_aggregator.publish(HandshakeEvent(args))
 
-        if type(msg) == PlayerQuit:
+        if msg.__class__.__name__ == "PlayerQuit":
             args = {
-                "id": self.mapping[addr].id
+                "id": self.mapping[addr.host].id
             }
             self.event_aggregator.publish(QuitEvent(args))
-            self.factory.clients[addr].loseConnection()
-            del self.factory.clients[addr]
+            self.factory.clients[addr.host].loseConnection()
+            del self.factory.clients[addr.host]
 
     def pickle_and_send_to_all(self, message, udp=False):
         pickled = pickle.dumps(message)
+        print self.mapping
         for k, v in self.factory.clients.items():
+            if k not in self.mapping.keys(): continue
             if not udp:
                 v.tcp_send_data(pickled)
 

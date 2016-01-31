@@ -10,7 +10,6 @@ class TCPConnection(protocol.Protocol):
     def __init__(self, msg_callback, addr):
         self.publish = msg_callback
         self.addr = addr
-        print type(addr)
 
     def dataReceived(self, data):
         self.publish(data, self.addr)
@@ -22,5 +21,5 @@ class TCPFactory(protocol.ServerFactory):
 
     def buildProtocol(self, addr):
         client = TCPConnection(self.publish, addr)
-        self.clients[addr] = client
+        self.clients[addr.host] = client
         return client
