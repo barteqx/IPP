@@ -67,7 +67,7 @@ class Connection(object):
             args = {
                 "name": msg.name,
                 "udp_port": msg.udp_port,
-                "addr": addr
+                "addr": addr.host
             }
             self.event_aggregator.publish(HandshakeEvent(args))
 

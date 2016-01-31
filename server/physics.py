@@ -12,10 +12,10 @@ from server.server_events import *
 
 class PhysicsProcess(Thread):
 
-    def __init__(self, config, publish_event_callback):
+    def __init__(self, config, event_aggregator):
         Thread.__init__(self)
         self.config = config
-        self.publish = publish_event_callback
+        self.event_aggregator = event_aggregator
         self.objects = [[]]
         self.update_interval = 1.0/self.config.world.fps
         self.update_counter = 0
@@ -74,10 +74,18 @@ class PhysicsProcess(Thread):
         while self.is_running:
             self.calculateFrame()
 
+    def subscribe_to_events(self):
+        self.event_aggregator.subscribe(self, ServerEventTypes.OBJECTCREATION)
+        self.event_aggregator.subscribe(self, ServerEventTypes.OBJECTDESTRUCTION)
+        self.event_aggregator.subscribe(self, ServerEventTypes.PLAYERMOVEMENT)
+
+    def notify(self, event):
+        pass
+
 
 def physics_init(event_aggregator, config):
 
-    physics_process = PhysicsProcess(config, event_aggregator.publish)
+    physics_process = PhysicsProcess(config, event_aggregator)
 
     # subscribe for events
 
