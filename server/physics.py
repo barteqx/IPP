@@ -118,8 +118,10 @@ class PhysicsProcess(Thread):
         force = Force(0, 0)
         mass = 10
         radius = 25
-
-        player = BodyModel(acceleration = acceleration,
+        player = (BodyModel(acceleration, velocity, position, force, mass, radius,
+                                              "player", False, self.config.world.size.width, self.config.world.size.height,
+                            port = player_info["udp_port"], addr = player_info["addr"],name = player_info["name"] ))
+        """player = BodyModel(acceleration = acceleration,
                             velocity = velocity,
                             position = position,
                             force = force,
@@ -132,7 +134,7 @@ class PhysicsProcess(Thread):
                             height = self.config.world.size.height,
 
 
-                  )
+                  )"""
 
         self.list_of_players.append(player)
         print self.list_of_players

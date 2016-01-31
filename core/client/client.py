@@ -43,6 +43,8 @@ class Client(threading.Thread):
         except Exception:
             print msg
         self.event_queue.append(decoded_msg)
+        data = pickle.dumps(0)
+        self.tcp_send_data(data)
 
     def listen_on_udp(self):
         reactor.listenUDP(self.udp_port, self.udp_datagram_protocol)
@@ -51,6 +53,7 @@ class Client(threading.Thread):
     def tcp_send_data(self, data):
         encoded_msg = pickle.dumps(data)
         try:
+            print("send data")
             TcpFactory.sendData(encoded_msg)
         except ClientProtocolNotInitializedException:
             print "Client protocol not initialized - cannot send"
