@@ -38,8 +38,10 @@ class Client(threading.Thread):
         self.event_queue.append(decoded_msg)
 
     def tcp_data_received(self, msg):
-        decoded_msg = pickle.loads(msg)
-        #print "tcp data received: " + msg
+        try:
+            decoded_msg = pickle.loads(msg)
+        except Exception:
+            print msg
         self.event_queue.append(decoded_msg)
 
     def listen_on_udp(self):

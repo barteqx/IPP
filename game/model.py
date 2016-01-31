@@ -88,6 +88,7 @@ class Model:
 
     def control_service(self):
         p = None
+
         for player in self.list_of_players:
             if player.id == self.this_client_id:
                 p = player

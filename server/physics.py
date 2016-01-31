@@ -50,7 +50,7 @@ class PhysicsProcess(Thread):
 
 
     def calculateFrame(self):
-       #s#  self.objects = [self.list_of_players, self.list_of_planets, self.list_of_shots]
+        self.objects = [self.list_of_players, self.list_of_planets, self.list_of_shots]
         self.ids_to_delete &= Physics.compute_gravity_influence(self.objects, self.update_interval)
 
         if self.update_counter == 0:
@@ -61,7 +61,7 @@ class PhysicsProcess(Thread):
         if self.update_counter == self.config.world.update_interval:
             self.update_counter %= self.config.world.update_interval
             list_of_all_objects = list(itertools.chain.from_iterable(self.objects))
-            self.send_objects_update(self.ids_to_delete, list_of_all_objects)
+            self.send_objects_update(self.ids_to_delete, self.objects)
             self.ids_to_delete = set()
 
             print "Object count: " + str(len(list_of_all_objects))
@@ -135,6 +135,7 @@ class PhysicsProcess(Thread):
                   )
 
         self.list_of_players.append(player)
+        print self.list_of_players
 
         return player
 
