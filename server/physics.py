@@ -133,7 +133,6 @@ class PhysicsProcess(Thread):
                             width = self.config.world.size.width,
                             height = self.config.world.size.height,
 
-
                   )"""
 
         self.list_of_players.append(player)
