@@ -10,6 +10,8 @@ class TcpClient(protocol.Protocol):
     def connectionMade(self):
         print("connection made")
         self.transport.write(self.handshake_message)
+        print("connection made 2")
+        self.transport.write(self.handshake_message)
 
     def dataReceived(self, data):
         print("data received")

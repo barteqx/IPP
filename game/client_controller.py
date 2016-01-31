@@ -55,5 +55,8 @@ class ClientController(Subscriber):
                 self.player_movement.is_shooting = True
 
             self.client.handle_player_movement(self.player_movement)
+        if isinstance(event, TickEvent):
+            for e in self.client.get_events():
+                self.publish(e)
 
 

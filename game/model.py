@@ -135,6 +135,7 @@ class Model:
 
     def set_this_client_id(self, obj):
         print("set this client id")
+        print obj.id
         self.this_client_id = obj.id
         #obj.name = sys.argv[1]
         self.list_of_players.append(obj)
