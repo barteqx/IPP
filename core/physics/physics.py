@@ -51,7 +51,7 @@ class Physics:
                 for obj in l:
                     if obj.id == id:
                         if obj.type == "player":
-                            obj.update_position(Physics.compute_new_position_for_player(list_of_all_objects))
+                            obj.update_position(Physics.compute_new_position_for_player(list_of_lists))
                         else:
                             l.remove(obj)
         return set_of_ids_to_delete
