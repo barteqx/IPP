@@ -94,7 +94,7 @@ class Physics:
 
             if player_movement_dict[p.id].right_force_subtraction:
                 #if p.force.x > 8000:
-                p.force.x -= Physics.force_move_addition
+                #p.force.x -= Physics.force_move_addition
                 player_movement_dict[p.id].right_force_subtraction = False
 
             if player_movement_dict[p.id].moving_left:
