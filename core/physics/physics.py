@@ -15,7 +15,7 @@ class Physics:
     velocity_resistance = 30
     max_force    = 10**6
     max_velocity = 10**2 * 2
-
+    force_move_addition = 10**6
     def __init__(self):
         print Physics.constG
     #zakladam ze kazdy objekt bedzie mial informacje o swoim id, polozeniu, masie, aktualnej predkosci oraz pozycji
@@ -32,15 +32,19 @@ class Physics:
                 set_of_ids_to_delete.add(obj.id)
 
     @staticmethod
-    def compute_gravity_influence(list_of_lists, delta_time):
+    def compute_gravity_influence(list_of_lists, delta_time, player_movement_dictionary):
         #lista, w kotrej znajda sie zaktualizowane dane obiektow
         list_of_all_objects = list(itertools.chain.from_iterable(list_of_lists))
         set_of_ids_to_delete = set([])
+
+
 
         for obj in list_of_all_objects:
             Physics.__check_for_collision(obj, list_of_all_objects, set_of_ids_to_delete)
         for list_of_objects in list_of_lists:
             Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time, set_of_ids_to_delete)
+            if len(list_of_objects) > 0 and list_of_objects[0].type == "player":
+                Physics.movement(player_movement_dictionary, list_of_objects)
 
         for id in set_of_ids_to_delete:
             for l in list_of_lists:
@@ -51,7 +55,44 @@ class Physics:
         #for list_of_objects in list_of_lists:
         #    Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
 
+    @staticmethod
+    def movement(player_movement_dict, list_of_objects):
+        for p in list_of_objects:
+            if player_movement_dict[p.id].moving_right:
+                if player_movement_dict[p.id].right_force_set is not True:
+                    p.force.x += Physics.force_move_addition
+                    player_movement_dict[p.id].right_force_set = True
 
+            if player_movement_dict[p.id].right_force_subtraction:
+                p.force.x -= Physics.force_move_addition
+                player_movement_dict[p.id].right_force_subtraction = False
+
+            if player_movement_dict[p.id].moving_left:
+                if player_movement_dict[p.id].left_force_set is not True:
+                    p.force.x -= Physics.force_move_addition
+                    player_movement_dict[p.id].left_force_set = True
+
+            if player_movement_dict[p.id].left_force_subtraction:
+                p.force.x += Physics.force_move_addition
+                player_movement_dict[p.id].left_force_subtraction = False
+
+            if player_movement_dict[p.id].moving_down:
+                if player_movement_dict[p.id].down_force_set is not True:
+                    p.force.y += Physics.force_move_addition
+                    player_movement_dict[p.id].down_force_set = True
+
+            if player_movement_dict[p.id].down_force_subtraction:
+                p.force.y -= Physics.force_move_addition
+                player_movement_dict[p.id].down_force_subtraction = False
+
+            if player_movement_dict[p.id].moving_up:
+                if player_movement_dict[p.id].up_force_set is not True:
+                    p.force.y -= Physics.force_move_addition
+                    player_movement_dict[p.id].up_force_set = True
+
+            if player_movement_dict[p.id].up_force_subtraction:
+                p.force.y += Physics.force_move_addition
+                player_movement_dict[p.id].up_force_subtraction = False
     @staticmethod
     def __compute_acceleration(force, mass):
         acceleration = Acceleration(0,0)

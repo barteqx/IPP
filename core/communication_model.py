@@ -8,12 +8,19 @@ class PhysicsUpdate:
 
 
 class PlayerMovement:
-    def __init__(self, moving_right, moving_left, moving_up, moving_down, is_shooting):
-        self.moving_right = moving_right
-        self.moving_left = moving_left
-        self.moving_up = moving_up
-        self.moving_down = moving_down
-        self.is_shooting = is_shooting
+    def __init__(self):
+        self.moving_right    = False
+        self.right_force_set = False
+        self.right_force_subtraction = False
+        self.moving_left     = False
+        self.left_force_set  = False
+        self.left_force_subtraction = False
+        self.moving_up       = False
+        self.up_force_set    = False
+        self.up_force_subtraction = False
+        self.moving_down     = False
+        self.down_force_set  = False
+        self.down_force_subtraction = False
 
 
 class PlayerDescription:

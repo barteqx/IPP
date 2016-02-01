@@ -1,24 +1,10 @@
 from core.physics.body_model import *
 from core.physics.physics import Physics
+from core.communication_model import PlayerMovement
 import collections
 import sys
 import math
 __author__ = 'Pawel'
-
-class PlayerMovementInfo():
-    def __init__(self):
-        self.moving_right    = False
-        self.right_force_set = False
-        self.right_force_subtraction = False
-        self.moving_left     = False
-        self.left_force_set  = False
-        self.left_force_subtraction = False
-        self.moving_up       = False
-        self.up_force_set    = False
-        self.up_force_subtraction = False
-        self.moving_down     = False
-        self.down_force_set  = False
-        self.down_force_subtraction = False
 
 class Model:
     def __init__(self):
@@ -71,11 +57,11 @@ class Model:
         self.list_of_battle_objects.append(self.list_of_shots)
 
     def default_value_for_md(self):
-        return PlayerMovementInfo()
+        return PlayerMovement()
 
     def update_battle_state(self, delta_time):
-        self.control_service()
-        Physics.compute_gravity_influence(self.list_of_battle_objects, delta_time)
+        #self.control_service()
+        Physics.compute_gravity_influence(self.list_of_battle_objects, delta_time, self.player_movement_dict)
         self.list_of_players = self.list_of_battle_objects[0]
         self.list_of_planets = self.list_of_battle_objects[1]
         self.list_of_shots   = self.list_of_battle_objects[2]

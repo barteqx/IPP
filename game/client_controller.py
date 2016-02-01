@@ -12,7 +12,7 @@ class ClientController(Subscriber):
         self.event_aggregator = event_aggregator
         self.config = config.Config.get('config.json')
         self.client = Client(self.publish, self.config.connect.host, self.config.connect.port, sys.argv[1], self.config.connect.udp_port)
-        self.player_movement = PlayerMovement(False, False, False, False, False)
+        self.player_movement = PlayerMovement()
         self.client.start()
         #self.DATARECEIVED = pygame.USEREVENT + 1
         #self.data_received_event = pygame.event.Event(self.DATARECEIVED, message="DataReceived")
