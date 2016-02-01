@@ -70,7 +70,7 @@ class PlayerController(Subscriber):
                 print event.args.obj
                 self.view.model.set_this_client_id(event.args.obj)
 
-            if event.args.__class__.__name__ == "PlayerJoined":
+            if event.args.__class__.__name__ == "PlayerJoin":
                 self.view.init_names(event.args)
 
             if event.args.__class__.__name__ == "ForwardMovement":

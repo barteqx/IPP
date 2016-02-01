@@ -29,7 +29,7 @@ class View:
 
     def init_names(self, list_of_players=None):
         if list_of_players:
-            self.model.list_of_players = list_of_players
+            self.model.list_of_players = list_of_players.list_of_players
             print list_of_players
         for player in self.model.list_of_players:
             self.names[player.name] = self.font.render(player.name, True, (0, 128, 0))

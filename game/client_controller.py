@@ -27,7 +27,6 @@ class ClientController(Subscriber):
         self.event_aggregator.publish(DataReceivedEvent(message))
 
     def notify(self, event):
-        print(self.model.this_client_id)
         if isinstance(event, KeydownEvent):
             if event.args["event"].key == pygame.locals.K_UP:
                 self.player_movement.moving_up = True
