@@ -4,8 +4,9 @@
       "width" : 1024,
       "height" : 768
     },
-    "fps": 100,
+    "fps": 50,
     "update_interval": 1
+
   },
   "port_TCP": 8000
 }
