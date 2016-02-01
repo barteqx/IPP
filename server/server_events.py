@@ -12,8 +12,7 @@ class ServerEventTypes(object):
     HANDSHAKERESPONSE = 4
     UPDATE = 5
     GAMESTATE = 6
-    OBJECTCREATION = 7
-    OBJECTDESTRUCTION = 8
+    FORWARDEVENT = 7
     COLLISION = 9
 
 class HandshakeEvent(ServerEvent):
@@ -46,15 +45,10 @@ class GameStateEvent(ServerEvent):
     def __init__(self, args):
         Event.__init__(self, ServerEventTypes.GAMESTATE, args)
 
-class ObjectCreationEvent(ServerEvent):
+class PlayerMovementForwardEvent(ServerEvent):
 
     def __init__(self, args):
-        Event.__init__(self, ServerEventTypes.OBJECTCREATION, args)
-
-class ObjectDestructionEvent(ServerEvent):
-
-    def __init__(self, args):
-        Event.__init__(self, ServerEventTypes.OBJECTDESTRUCTION, args)
+        Event.__init__(self, ServerEventTypes.FORWARDEVENT, args)
 
 class CollisionEvent(ServerEvent):
 

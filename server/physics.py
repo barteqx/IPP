@@ -1,11 +1,12 @@
 __author__ = 'bartoszzasieczny'
 from threading import Thread
 from time import sleep
+from collections import defaultdict
 import itertools
 
 from core.physics.physics import *
 from core.physics.body_model import *
-#from core.communication_model import *
+from core.communication_model import *
 
 from server.server_events import *
 
@@ -21,6 +22,7 @@ class PhysicsProcess(Thread):
         self.update_counter = 0
         self.ids_to_delete = set()
         self.is_running = False
+        self.player_movement_dictionary = defaultdict(PlayerMovement)
         self.list_of_players = []
         self.list_of_planets=[]
         self.list_of_shots = []
@@ -51,7 +53,7 @@ class PhysicsProcess(Thread):
 
     def calculateFrame(self):
         self.objects = [self.list_of_players, self.list_of_planets, self.list_of_shots]
-        self.ids_to_delete &= Physics.compute_gravity_influence(self.objects, self.update_interval)
+        self.ids_to_delete &= Physics.compute_gravity_influence(self.objects, self.update_interval, self.player_movement_dictionary)
 
         if self.update_counter == 0:
              print "Object count: " + str(len(list(itertools.chain.from_iterable(self.objects))))
@@ -104,11 +106,21 @@ class PhysicsProcess(Thread):
             print "QUIT " + str(event.args["id"])
             print self.list_of_players
             id_not_equal = lambda elem: elem.id != event.args["id"]
+            del self.player_movement_dictionary[event.args["id"]]
             self.list_of_players = filter(id_not_equal, self.list_of_players)
             print self.list_of_players
 
+        if event.type == ServerEventTypes.PLAYERMOVEMENT:
+            self.player_movement(event.args)
+            self.publish(PlayerMovementForwardEvent(event.args))
+
+
     def publish(self, event):
         self.event_aggregator.publish(event)
+
+    def player_movement(self, movement):
+        self.player_movement_dictionary[movement["id"]] = movement["movement"]
+
 
     def create_player(self, player_info):
 

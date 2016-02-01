@@ -28,6 +28,9 @@ class PlayerDescription:
         self.name = name
         self.udp_port = udp_port
 
+class ForwardMovement:
+    def __init__(self, event):
+        self.event = event
 
 class PlayerQuit:
     pass

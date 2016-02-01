@@ -36,6 +36,10 @@ class Connection(object):
             physics_update = PhysicsUpdate(event.args["objects"], event.args["ids_to_delete"])
             self.pickle_and_send_to_all(physics_update)
 
+        if event.type == ServerEventTypes.FORWARDEVENT:
+            forward = ForwardMovement(event.args)
+            self.pickle_and_send_to_all(forward)
+
         if event.type == ServerEventTypes.HANDSHAKERESPONSE:
             handshake_response = HandshakeResponse(event.args["object"], event.args["ok"])
             pickled = pickle.dumps(handshake_response)
@@ -102,8 +106,7 @@ class Connection(object):
 
     def subscribe_to_events(self):
         self.event_aggregator.subscribe(self, ServerEventTypes.UPDATE)
-        self.event_aggregator.subscribe(self, ServerEventTypes.OBJECTDESTRUCTION)
-        self.event_aggregator.subscribe(self, ServerEventTypes.OBJECTCREATION)
+        self.event_aggregator.subscribe(self, ServerEventTypes.FORWARDEVENT)
         self.event_aggregator.subscribe(self, ServerEventTypes.HANDSHAKERESPONSE)
 
 
