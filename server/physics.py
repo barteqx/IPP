@@ -102,6 +102,8 @@ class PhysicsProcess(Thread):
                 "ok": True
             }
             self.publish(HandshakeResponseEvent(args))
+            args = self.list_of_players
+            self.publish(PlayerJoinedEvent(args))
 
         if event.type == ServerEventTypes.QUIT:
             #print "QUIT " + str(event.args["id"])

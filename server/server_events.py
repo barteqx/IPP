@@ -13,6 +13,7 @@ class ServerEventTypes(object):
     UPDATE = 5
     GAMESTATE = 6
     FORWARDEVENT = 7
+    PLAYERJOINED = 8
     COLLISION = 9
 
 class HandshakeEvent(ServerEvent):
@@ -49,6 +50,10 @@ class PlayerMovementForwardEvent(ServerEvent):
 
     def __init__(self, args):
         Event.__init__(self, ServerEventTypes.FORWARDEVENT, args)
+
+class PlayerJoinedEvent(ServerEvent):
+    def __init__(self, args):
+        Event.__init__(self, ServerEventTypes.PLAYERJOINED, args)
 
 class CollisionEvent(ServerEvent):
 

@@ -40,11 +40,16 @@ class Connection(object):
             forward = ForwardMovement(event.args)
             self.pickle_and_send_to_all(forward)
 
+        if event.type == ServerEventTypes.PLAYERJOINED:
+            joined = PlayerJoin(event.args)
+            self.pickle_and_send_to_all(joined)
+
         if event.type == ServerEventTypes.HANDSHAKERESPONSE:
             handshake_response = HandshakeResponse(event.args["object"], event.args["ok"])
             pickled = pickle.dumps(handshake_response)
             self.mapping[event.args["object"].addr] = MappingEntry(event.args["object"])
             self.factory.clients[event.args["object"].addr].sendString(pickled)
+
 
     def set_up_connection(self):
         print "Setting up connection..."
@@ -108,6 +113,7 @@ class Connection(object):
         self.event_aggregator.subscribe(self, ServerEventTypes.UPDATE)
         self.event_aggregator.subscribe(self, ServerEventTypes.FORWARDEVENT)
         self.event_aggregator.subscribe(self, ServerEventTypes.HANDSHAKERESPONSE)
+        self.event_aggregator.subscribe(self, ServerEventTypes.PLAYERJOINED)
 
 
 def connection_init(event_aggregator, config):
