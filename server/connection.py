@@ -41,7 +41,9 @@ class Connection(object):
             self.pickle_and_send_to_all(forward)
 
         if event.type == ServerEventTypes.PLAYERJOINED:
+            print "player joined sent"
             joined = PlayerJoin(event.args)
+            print joined.list_of_players
             self.pickle_and_send_to_all(joined)
 
         if event.type == ServerEventTypes.HANDSHAKERESPONSE:

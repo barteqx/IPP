@@ -103,6 +103,7 @@ class PhysicsProcess(Thread):
             }
             self.publish(HandshakeResponseEvent(args))
             args = self.list_of_players
+            print args
             self.publish(PlayerJoinedEvent(args))
 
         if event.type == ServerEventTypes.QUIT:
