@@ -48,15 +48,15 @@ class PhysicsProcess(Thread):
         self.objects.append(self.list_of_planets)
         self.objects.append(self.list_of_shots)
 
-        print self.objects
+        #print self.objects
 
 
     def calculateFrame(self):
         self.objects = [self.list_of_players, self.list_of_planets, self.list_of_shots]
         self.ids_to_delete &= Physics.compute_gravity_influence(self.objects, self.update_interval, self.player_movement_dictionary)
 
-        if self.update_counter == 0:
-             print "Object count: " + str(len(list(itertools.chain.from_iterable(self.objects))))
+        #if self.update_counter == 0:
+        #     print "Object count: " + str(len(list(itertools.chain.from_iterable(self.objects))))
 
         self.update_counter += 1
 
@@ -66,10 +66,10 @@ class PhysicsProcess(Thread):
             self.send_objects_update(self.ids_to_delete, self.objects)
             self.ids_to_delete = set()
 
-            print "Object count: " + str(len(list_of_all_objects))
-            print "Positions:"
-            for obj in list_of_all_objects:
-                print '%d: ' % obj.id, obj
+            #print "Object count: " + str(len(list_of_all_objects))
+            #print "Positions:"
+            #for obj in list_of_all_objects:
+            #    print '%d: ' % obj.id, obj
 
         sleep(self.update_interval)
 
@@ -103,12 +103,12 @@ class PhysicsProcess(Thread):
             self.publish(HandshakeResponseEvent(args))
 
         if event.type == ServerEventTypes.QUIT:
-            print "QUIT " + str(event.args["id"])
-            print self.list_of_players
+            #print "QUIT " + str(event.args["id"])
+            #print self.list_of_players
             id_not_equal = lambda elem: elem.id != event.args["id"]
             del self.player_movement_dictionary[event.args["id"]]
             self.list_of_players = filter(id_not_equal, self.list_of_players)
-            print self.list_of_players
+            #print self.list_of_players
 
         if event.type == ServerEventTypes.PLAYERMOVEMENT:
             self.player_movement(event.args)
