@@ -70,3 +70,6 @@ class PlayerController(Subscriber):
                 print event.args.obj
                 self.view.model.set_this_client_id(event.args.obj)
 
+            if event.args.__class__.__name__ == "ForwardMovement":
+                print "forward movement player controller"
+                self.view.model.player_movement_dict[event.args.event["id"]] = event.args.event["movement"]

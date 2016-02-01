@@ -56,7 +56,6 @@ class ClientController(Subscriber):
 
             self.client.handle_player_movement(self.player_movement)
         if isinstance(event, TickEvent):
-            print("tick event")
             for e in self.client.get_events():
                 self.publish(e)
 
