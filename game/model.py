@@ -137,15 +137,15 @@ class Model:
             self.player_movement_dict[p.id].up_force_subtraction = False
 
     def server_update_objects(self, list_of_objects):
-        print("server_update_objects")
-        print(len(list_of_objects[1]))
+        #print("server_update_objects")
+        #print(len(list_of_objects[1]))
         self.list_of_battle_objects[0] = list_of_objects[0]
         self.list_of_battle_objects[1] = list_of_objects[1]
         self.list_of_battle_objects[2] = list_of_objects[2]
         #print(len(self.list_of_battle_objects[1]))
 
     def set_this_client_id(self, obj):
-        print("set this client id")
+        #print("set this client id")
         self.this_client_id = obj.id
         self.list_of_players.append(obj)
 

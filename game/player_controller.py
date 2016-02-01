@@ -56,13 +56,13 @@ class PlayerController(Subscriber):
                 self.view.model.player_movement_dict[id].right_force_set = False
                 self.view.model.player_movement_dict[id].right_force_subtraction = True
 
-            if event.args["event"].key == pygame.locals.K_SPACE:
-                self.view.model.shoot()
+            #if event.args["event"].key == pygame.locals.K_SPACE:
+            #    self.view.model.shoot()
 
         if isinstance(event, DataReceivedEvent):
-            print("player controller")
-            print(event)
-            print event.args
+            #print("player controller")
+            #print(event)
+            #print event.args
             if event.args.__class__.__name__ == "PhysicsUpdate":
                 self.view.model.server_update_objects(event.args.objects_states)
 
@@ -71,5 +71,6 @@ class PlayerController(Subscriber):
                 self.view.model.set_this_client_id(event.args.obj)
 
             if event.args.__class__.__name__ == "ForwardMovement":
-                print "forward movement player controller"
-                self.view.model.player_movement_dict[event.args.event["id"]] = event.args.event["movement"]
+                #print "forward movement player controller"
+                if event.args.event["id"] != self.view.model.this_client_id:
+                    self.view.model.player_movement_dict[event.args.event["id"]] = event.args.event["movement"]

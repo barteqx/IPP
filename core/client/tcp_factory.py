@@ -9,11 +9,11 @@ class TcpClient(NetstringReceiver):
         self.handshake_message = handshake_message
 
     def connectionMade(self):
-        print("connection made")
+        #print("connection made")
         self.sendString(self.handshake_message)
 
     def stringReceived(self, data):
-        print("data received")
+        #print("data received")
         self.msg_callback(data)
 
     def connectionLost(self, reason):

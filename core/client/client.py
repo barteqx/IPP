@@ -17,8 +17,8 @@ import copy
 class Client(threading.Thread):
     def __init__(self, msg_callback, host, port, name="pawel", udp_port=8001):
         threading.Thread.__init__(self)
-        print(udp_port)
-        print(host)
+        #print(udp_port)
+        #print(host)
         #self.msg_callback = msg_callback
         self.host = host
         self.name = name
@@ -34,13 +34,13 @@ class Client(threading.Thread):
 
     def udp_data_received(self, msg):
         decoded_msg = pickle.loads(msg)
-        print("udp client")
+        #print("udp client")
         self.event_queue.append(decoded_msg)
 
     def tcp_data_received(self, msg):
         try:
             decoded_msg = pickle.loads(msg)
-            print decoded_msg
+            #print decoded_msg
         except Exception:
             print msg
         self.event_queue.append(decoded_msg)
@@ -53,7 +53,7 @@ class Client(threading.Thread):
     def tcp_send_data(self, data):
         encoded_msg = pickle.dumps(data)
         try:
-            print("send data")
+            #print("send data")
             TcpFactory.sendData(encoded_msg)
         except ClientProtocolNotInitializedException:
             print "Client protocol not initialized - cannot send"
@@ -62,7 +62,7 @@ class Client(threading.Thread):
         reactor.connectTCP(self.host, self.port, self.tcp_factory)
         self.listen_on_udp()
         reactor.run(installSignalHandlers=False)
-        print("podlaczony")
+        #print("podlaczony")
         self.is_connected = True
 
     def handle_player_movement(self, player_movement):

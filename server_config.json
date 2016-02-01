@@ -5,7 +5,7 @@
       "height" : 768
     },
     "fps": 30,
-    "update_interval": 90
+    "update_interval": 30
 
   },
   "port_TCP": 8000

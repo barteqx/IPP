@@ -11,10 +11,10 @@ __author__ = 'Pawel'
 class Physics:
     shoots = 2
     constG = 6.67 * 10**-10
-    force_resistance    = 100
+    force_resistance    = 10000
     velocity_resistance = 30
     max_force    = 10**6
-    max_velocity = 10**2 * 2
+    max_velocity = 50
     force_move_addition = 10**6
     def __init__(self):
         print Physics.constG
@@ -42,9 +42,9 @@ class Physics:
         for obj in list_of_all_objects:
             Physics.__check_for_collision(obj, list_of_all_objects, set_of_ids_to_delete)
         for list_of_objects in list_of_lists:
-            Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time, set_of_ids_to_delete)
             if len(list_of_objects) > 0 and list_of_objects[0].type == "player":
-                Physics.movement(player_movement_dictionary, list_of_objects)
+                Physics.movement(player_movement_dictionary, list_of_objects, list_of_lists[2])
+            Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time, set_of_ids_to_delete)
 
         for id in set_of_ids_to_delete:
             for l in list_of_lists:
@@ -56,14 +56,44 @@ class Physics:
         #    Physics.compute_gravity_influence_for_one_list(list_of_objects, list_of_all_objects, delta_time)
 
     @staticmethod
-    def movement(player_movement_dict, list_of_objects):
+    def movement(player_movement_dict, list_of_objects, list_of_shots):
         for p in list_of_objects:
+            if player_movement_dict[p.id].is_shooting:
+
+                R = p.radius
+                r = 2
+                shoot_x_speed = 100
+                shoot_y_speed = 100
+                vx = vy = appx = appy = 0
+
+                if player_movement_dict[p.id].moving_right:
+                    vx += shoot_x_speed
+                    appx += r + R + 2
+                if player_movement_dict[p.id].moving_left:
+                    vx -= shoot_x_speed
+                    appx -= r + R + 2
+                if player_movement_dict[p.id].moving_down:
+                    vy += shoot_y_speed
+                    appy += r + R + 2
+                if player_movement_dict[p.id].moving_up:
+                    vy -= shoot_y_speed
+                    appy -= r + R + 2
+                if vx != 0 or vy != 0:
+                    list_of_shots.append(BodyModel(Acceleration(0, 0), Velocity(vx, vy), Position(p.position.x + appx
+                                                                           ,p.position.y + appy), Force(0, 0), 1, r, "shoot", False, p.width, p.height))
+
+
+
+
+                print("player is shooting")
+                player_movement_dict[p.id].is_shooting = False
             if player_movement_dict[p.id].moving_right:
-                if player_movement_dict[p.id].right_force_set is not True:
+                if player_movement_dict[p.id].right_force_set is False:
                     p.force.x += Physics.force_move_addition
                     player_movement_dict[p.id].right_force_set = True
 
             if player_movement_dict[p.id].right_force_subtraction:
+                #if p.force.x > 8000:
                 p.force.x -= Physics.force_move_addition
                 player_movement_dict[p.id].right_force_subtraction = False
 
@@ -73,7 +103,7 @@ class Physics:
                     player_movement_dict[p.id].left_force_set = True
 
             if player_movement_dict[p.id].left_force_subtraction:
-                p.force.x += Physics.force_move_addition
+                #p.force.x += Physics.force_move_addition
                 player_movement_dict[p.id].left_force_subtraction = False
 
             if player_movement_dict[p.id].moving_down:
@@ -82,7 +112,7 @@ class Physics:
                     player_movement_dict[p.id].down_force_set = True
 
             if player_movement_dict[p.id].down_force_subtraction:
-                p.force.y -= Physics.force_move_addition
+                #p.force.y -= Physics.force_move_addition
                 player_movement_dict[p.id].down_force_subtraction = False
 
             if player_movement_dict[p.id].moving_up:
@@ -91,7 +121,7 @@ class Physics:
                     player_movement_dict[p.id].up_force_set = True
 
             if player_movement_dict[p.id].up_force_subtraction:
-                p.force.y += Physics.force_move_addition
+                #p.force.y += Physics.force_move_addition
                 player_movement_dict[p.id].up_force_subtraction = False
     @staticmethod
     def __compute_acceleration(force, mass):

@@ -19,6 +19,7 @@ class PhysicsProcess(Thread):
         self.event_aggregator = event_aggregator
         self.objects = []
         self.update_interval = 1.0/self.config.world.fps
+        #self.update_interval = self.config.world.update_interval
         self.update_counter = 0
         self.ids_to_delete = set()
         self.is_running = False
@@ -111,6 +112,7 @@ class PhysicsProcess(Thread):
             #print self.list_of_players
 
         if event.type == ServerEventTypes.PLAYERMOVEMENT:
+            #print("player sie poruszyl")
             self.player_movement(event.args)
             self.publish(PlayerMovementForwardEvent(event.args))
 

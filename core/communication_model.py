@@ -21,6 +21,7 @@ class PlayerMovement:
         self.moving_down     = False
         self.down_force_set  = False
         self.down_force_subtraction = False
+        self.is_shooting = False
 
 
 class PlayerDescription:

@@ -95,7 +95,7 @@ class Connection(object):
 
     def pickle_and_send_to_all(self, message, udp=False):
         pickled = pickle.dumps(message)
-        print self.mapping
+        #print self.mapping
         for k, v in self.factory.clients.items():
             if k not in self.mapping.keys(): continue
             if not udp:
